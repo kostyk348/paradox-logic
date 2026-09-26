@@ -1,0 +1,18 @@
+(1) LP threshold-function classifier validation (OEIS A000609)
+    n=1: 4   (expected 4)
+    n=2: 14   (expected 14)
+    n=3: 104   (expected 104)
+
+(1) which gates fold into one Hopfield layer?
+    AND   (k=2): LTF -> Hopfield
+    OR    (k=2): LTF -> Hopfield
+    NAND  (k=3): LTF -> Hopfield
+    MAJ   (k=3): LTF -> Hopfield
+    XOR   (k=2): NOT LTF -> escapes (parity barrier)
+    XNOR  (k=2): NOT LTF -> escapes (parity barrier)
+
+(2) Goles-Olivos: max limit-cycle length (n=3, 4000 random networks each)
+    SYMMETRIC (Hopfield)   max_cycle = 2
+    ASYMMETRIC (RNN)       max_cycle = 6
+
+    => period <= 2 is a theorem for symmetric coupling; direction breaks it.

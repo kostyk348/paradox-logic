@@ -1,0 +1,12 @@
+Topological (parity) memory vs Hopfield under noise
+
+ noise  parity, value  parity, struct  Hopfield, value
+  0.00          0.000           0.000            0.000
+  0.05          0.000           0.138            0.377
+  0.10          0.000           0.246            0.897
+  0.20          0.000           0.385            1.000
+  0.30          0.000           0.463            1.000
+  0.40          0.000           0.497            1.000
+
+Parity bit is exactly invariant to value noise; only structural edits cost it.
+Caveat: this is memory in the STRUCTURE, not in the state dynamics.

@@ -1,0 +1,2 @@
+LivingSystem Hurst (C port):
+N= 8 meta=0.05 steps= 5000 runs= 200 comp0  : H=0.577±0.034  >0.5: 98%  >0.6: 26%  max=0.654

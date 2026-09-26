@@ -1,0 +1,4 @@
+value noise:   class changes = 0  (0 => novelty is orthogonal to randomness)
+structure mu=0.002: class changes = 14    (novelty > 0, scales ~ linearly)
+structure mu=0.01 : class changes = 66    (novelty > 0, scales ~ linearly)
+structure mu=0.05 : class changes = 314   (novelty > 0, scales ~ linearly)

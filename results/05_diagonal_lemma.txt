@@ -1,0 +1,9 @@
+Self-gauge fixed points  (n'[i] = c[i] XOR holonomy(n))
+
+  L=3: base vectors c with a trivial-class fixed point: 4/8
+  L=4: base vectors c with a trivial-class fixed point: 8/16
+  L=5: base vectors c with a trivial-class fixed point: 16/32
+  L=6: base vectors c with a trivial-class fixed point: 32/64
+
+  overall: 60/120
+  => trivial (consistent) self-referential states exist: the lemma is FALSE in this form.
