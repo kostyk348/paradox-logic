@@ -1,0 +1,9 @@
+Classification by the holonomy invariant (random single-input networks)
+
+  n  trials  paradox=0 & fixed  paradox=0 & osc  paradox>0 & osc
+  6    4000                817              602             2581
+  8    4000                663              591             2746
+ 10    4000                573              651             2769
+
+  'paradox=0 & fixed' + 'paradox=0 & osc'  = all consistent systems
+  invariant predicts PARADOX (dim>0) exactly; it does NOT predict oscillation when dim=0.

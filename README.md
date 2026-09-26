@@ -139,6 +139,10 @@ experiments/
   03_topological_memory.py      parity checksum vs Hopfield
   04_novelty.py                 novelty != noise
   05_diagonal_lemma.py          the refuted self-reference lemma
+  06_frustration.py             spin-glass order parameter (criticality rescued)
+  07_nonabelian.py              non-abelian holonomy, path dependence
+  08_classification.py          invariant vs behaviour
+  09_diagnostics.py             exact k-XOR-SAT, contradiction localisation
   A_conjugacy.py                XOR barrier + Goles-Olivos
   B_living_hurst.py             Hurst estimator null model
   living.c, hurst_null.c        fast C ports
@@ -163,14 +167,37 @@ figures/                        generated figure
 - Boolean threshold functions — OEIS A000609.
 - Frustration in spin glasses (see Roadmap) — Toulouse (1977).
 
-## Roadmap
+## Extended checks — the four roadmap items, now tested
 
-Where this line can go next, in the order I would pursue it:
+| Roadmap item | Experiment | Outcome |
+|---|---|---|
+| Frustration / spin glasses | `06_frustration.py` | concept rescued: a real order parameter turns on |
+| Non-abelian holonomy | `07_nonabelian.py` | finer than parity; path-dependent → memory |
+| Classification by invariant | `08_classification.py` | exact for paradox, incomplete for behaviour |
+| Diagnostic library | `09_diagnostics.py` | exact k-XOR-SAT, packed GF(2) rank |
 
-1. **Classification, not dynamics.** Since the class is a coordinate, use `([n], dim coker)` to *separate* networks into regimes that cannot be reached from one another. Purely static, cheap, no criticality needed.
-2. **Frustration / spin glasses.** Parity paradoxes are exactly *frustrated loops* in an Ising model. The thermodynamics that failed in #2 may succeed here, because frustrated systems have a genuine phase transition (replica symmetry breaking) that a Poisson defect gas does not.
-3. **Non-abelian holonomy.** Replace `{0,1}` by a non-abelian group `G`. The obstruction becomes a path-dependent word — real hysteresis and memory, not a static bit.
-4. **A real diagnostic library.** `consistency` / `holonomy_dim` / `min_groundings` as tooling for XOR-SAT-like constraint systems, replicated-state reconciliation, and parity-fault diagnosis.
+**06 — Frustration.** Parity labels are Ising couplings (`n=1 ⇔ J=-1`); a frustrated loop is a holonomy. In the SK model the Edwards–Anderson overlap turns on through `T_c = 1`:
+
+```
+ T     <q^2>   chi_SG
+ 0.50  0.204    6.53
+ 1.00  0.062    1.99
+ 2.40  0.040    1.28
+```
+
+`<q²>` rises ~5× as `T` crosses `T_c`. Unlike the Poisson defect gas of experiment 02, frustration has a genuine order parameter — the concept behind the failed criticality claim is not empty. (Caveat: a crude Metropolis smears the transition; a sharp `T_c` needs parallel tempering.)
+
+**07 — Non-abelian holonomy.** With `G = S₃`, the commutator labeling `[a, b, a⁻¹, b⁻¹]` on a 4-cycle has trivial abelianization (so **parity says "consistent"**) yet a non-trivial group holonomy — no global assignment exists. Non-abelian holonomy is strictly finer than parity. Path holonomies differ between paths between the same nodes: state is path-dependent, which is the memory that #3 lacked.
+
+**08 — Classification.** Over random single-input networks the invariant decides **paradox exactly** (`dim coker = 0 ⇔ a fixed point exists`), but it does **not** decide behaviour: at `dim = 0` a large share of systems still oscillate (multistability). Near-perfect classifier of *paradox*, poor classifier of *dynamics*.
+
+**09 — Diagnostics.** k-XOR-SAT (any arity) solved exactly by one packed GF(2) rank computation; reports satisfiability, free variables (= minimum groundings), and localises contradictory clauses. Exact; the Python reference is `O(n²)` in practice (see timings in `results/09_diagnostics.txt`).
+
+## Open questions
+
+- The invariant describes only the linear layer; the `AND`/`OR` boundary is where it stops tracking dynamics. Is there a natural *non-linear* refinement (e.g. matroid / tropical) that extends the coordinate past that boundary?
+- The non-abelian case gives path dependence but was only checked on toy cycles. What is the right `G` for real constraint systems, and does `H¹(G; G)` classify their regimes?
+- If frustration is the right dynamical picture, does the frustrated Ising model of the *actual* reference network reproduce its measured Hurst — or is even that still a parameter, not a regime?
 
 ## License
 

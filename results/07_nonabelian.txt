@@ -1,0 +1,9 @@
+(1) parity-invisible paradox (commutator labeling on a 4-cycle)
+    abelianization (product of signs) = +1   -> GF(2) says: CONSISTENT
+    non-abelian holonomy = (2, 0, 1)   (identity? False)
+    global assignment exists? False
+    => S_3 says PARADOX where parity sees none: non-abelian holonomy is strictly finer.
+
+(2) path dependence (hysteresis)
+    holonomy 0->1->2 = (1, 2, 0)    holonomy 0->2 = (0, 1, 2)    equal? False
+    => a node's value depends on HOW you reached it: path-dependent state = memory.

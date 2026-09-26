@@ -1,0 +1,14 @@
+SK spin glass:  J_ij ~ N(0,1/N),  theory T_c = 1.   Overlap <q^2> turns on below T_c.
+
+    T     <q^2>    chi_SG
+ 0.50     0.204      6.53
+ 0.70     0.093      2.99
+ 0.85     0.073      2.35
+ 1.00     0.062      1.99
+ 1.15     0.049      1.57
+ 1.40     0.042      1.34
+ 1.80     0.039      1.25
+ 2.40     0.040      1.28
+
+=> <q^2> ~ 0 above T_c and rises through T_c = 1: a real phase transition.
+   The Poisson defect gas of experiment 02 had none; frustration is the right model.

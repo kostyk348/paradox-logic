@@ -103,3 +103,43 @@ def label_cycle(edges: Sequence[Edge], labels: Sequence[int]) -> list[Edge]:
 def cycle_holonomy(labels: Sequence[int]) -> int:
     """Parity of 1-labels around a cycle (0 = consistent, 1 = paradox)."""
     return sum(l & 1 for l in labels) & 1
+
+
+def gf2_rank_bitrows(rows: Sequence[Sequence[int]], ncols: int) -> int:
+    """Rank over GF(2) of sparse bit-rows (lists of column indices), packed in uint64.
+
+    Online elimination against a basis; rows and xors are word-parallel. Uses
+    lowest-set-bit pivoting so sparse rows stay cheap.
+    """
+    words = (ncols + 63) // 64
+    ZERO = np.uint64(0)
+    pivot: dict[int, int] = {}
+    basis: list[np.ndarray] = []
+    for cols in rows:
+        r = np.zeros(words, dtype=np.uint64)
+        for v in cols:
+            r[v >> 6] |= np.uint64(1) << np.uint64(v & 63)
+        while True:
+            w = 0
+            while w < words and r[w] == ZERO:
+                w += 1
+            if w == words:
+                break
+            low = int(r[w]) & (-int(r[w]))      # lowest set bit of this word (Python int)
+            col = (w << 6) + low.bit_length() - 1
+            if col in pivot:
+                r ^= basis[pivot[col]]
+            else:
+                pivot[col] = len(basis)
+                basis.append(r.copy())
+                break
+    return len(basis)
+
+
+def solve_xor_sat(nvars: int, clauses: Sequence[Sequence[int]], rhs: Sequence[int]):
+    """Exact k-XOR-SAT. Returns (satisfiable, free_vars_to_pin)."""
+    rows_a = [list(c) for c in clauses]
+    rows_aug = [list(c) + ([nvars] if (r & 1) else []) for c, r in zip(clauses, rhs)]
+    ra = gf2_rank_bitrows(rows_a, nvars)
+    raug = gf2_rank_bitrows(rows_aug, nvars + 1)
+    return ra == raug, nvars - ra
