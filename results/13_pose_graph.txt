@@ -1,0 +1,8 @@
+SO(3) pose graph: one corrupted loop closure per trial
+
+  trials:                    200
+  corruption detected:       200/200  (100%)
+  corrupted edge localised:  196/200  (98%)
+
+=> non-abelian (rotation) holonomy localises a single bad loop closure exactly.
+   The abelian shadow cannot: rotations do not commute, so even corruptions survive it.

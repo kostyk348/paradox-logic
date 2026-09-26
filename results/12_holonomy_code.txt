@@ -1,0 +1,13 @@
+Holonomy code on random S_3-labelled graphs
+
+  V    p  cycle-rank   detect  localise  bridge-err undetect
+  7  0.2         4.3      87%       64%                   40
+  7  0.4         8.0      98%       90%                    7
+  9 0.25         9.0      96%       84%                   11
+  9  0.5        17.8      99%       99%                    2
+ 12  0.3        19.9     100%       97%                    0
+
+'bridge-err undetect' = single errors placed on a bridge that parity/holonomy
+cannot see at all (no cycle through them) -- the code's minimum-weight undetectable error.
+Detectable errors localise exactly whenever the corrupted edge is the unique edge whose
+removal restores consistency; larger cycle rank makes that uniqueness generic.

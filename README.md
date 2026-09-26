@@ -146,6 +146,10 @@ experiments/
   09_diagnostics.py             exact k-XOR-SAT, contradiction localisation
   10_group_holonomy.py          detection ladder + error localisation
   11_repair_hardness.py         consistency is easy, optimal repair is hard
+  12_holonomy_code.py           detection / localisation / distance
+  13_pose_graph.py              SO(3) loop-closure error localisation
+  14_anyons.py                  braiding as computation (topological protection)
+  15_sapir_whorf.py             language = bundle, thought = global section
   A_conjugacy.py                XOR barrier + Goles-Olivos
   B_living_hurst.py             Hurst estimator null model
   living.c, hurst_null.c        fast C ports
@@ -224,6 +228,52 @@ signed graphs (ℤ/2)                 consistent   max-sat  frustration
 So: **count the paradoxes in polynomial time; fix them minimally — hard.**
 
 **Frontier.** Non-abelian holonomy *is* braiding. The one setting where holonomy is known to *compute* is topological quantum computation (non-abelian anyons); the classical labelled graphs here are its shadow.
+
+## Computation, errors, and language
+
+### Holonomy code — detection, localisation, distance (`12`)
+
+A consistent labelling is a codeword; a corrupted edge is an error. The **distance** of the code is the girth: the minimum undetectable error is a non-zero coboundary, whose least weight is the shortest cycle — so a single error on a **bridge** is invisible (no cycle runs through it); larger cycle rank makes single-error localisation generic.
+
+```
+ V    p  cycle-rank   detect  localise   bridge-err invisible
+ 7  0.2    4.3          87%     64%            40
+ 9  0.5   17.8          99%     99%             2
+12  0.3   19.9         100%     97%             0
+```
+
+### Real SO(3) pose graph (`13`)
+
+The applied face: nodes are orientations in `SO(3)`, edges are measured relative rotations, one loop closure is corrupted.
+
+```
+trials 200:  detected 200/200 (100%)   localised 196/200 (98%)
+```
+
+The non-abelian invariant localises a single bad loop closure exactly. An abelian check cannot: rotations do not commute.
+
+### Anyons — holonomy computes (`14`)
+
+Braiding non-abelian anyons *is* holonomy over the configuration space. Mapping `B_n → S_n`, a braid word becomes a group element = a gate:
+
+```
+σ0σ1 = (1,2,0)   vs   σ1σ0 = (2,0,1)     -> order matters (non-commuting gates)
+```
+
+The gate depends only on the braid class, not the geometry — the computation is topologically protected. This is the one setting where holonomy provably *computes* (topological quantum computation); the classical graphs here are its shadow.
+
+### Sapir–Whorf, made precise (`15`)
+
+Read a **language** as a group-labelled graph: concepts are nodes, relations are edges; a **thought** is a globally consistent assignment (a coherent belief-set). A **translation** is a gauge transformation (`x_v ↦ c·x_v`), which changes the surface labels but not the holonomy class.
+
+```
+languages = labellings of a 4-cycle over S_3
+  holonomy = identity        -> 6 coherent thoughts
+  holonomy = transposition   -> 0   (paradoxical language)
+  holonomy = 3-cycle         -> 0
+```
+
+The coherent-thought set depends **only on the conjugacy class of the holonomy**. Hence: **strong Whorf is false** — there is a translation-invariant core (the holonomy class) shared by all languages in one gauge orbit — and **weak Whorf is true** — the class bounds the thinkable, and a non-trivial class admits no global thought at all. The number of "meaning-classes" of a language is the number of conjugacy classes of its group.
 
 ## Open questions
 

@@ -1,0 +1,16 @@
+Languages = labelings of a 4-cycle over S_3; thoughts = globally consistent assignments
+
+                             class holonomy=id?  #solutions
+                          identity         True         [6]
+                    class[3 elems]        False         [0]
+                    class[2 elems]        False         [0]
+
+number of conjugacy classes of S_3 = 3  ->  3 meaning-classes:
+   identity -> 6 coherent thoughts (the language admits a global world)
+   transposition class -> 0 ; 3-cycle class -> 0 (paradoxical languages)
+
+=> translation between two languages exists iff they share a holonomy class.
+   Same class, different surface labels  -> identical thought-set (mutually translatable).
+   Different class                        -> one can think what the other cannot.
+   STRONG Whorf: false (invariant core survives all translations).
+   WEAK   Whorf: true  (the class bounds the thinkable).
