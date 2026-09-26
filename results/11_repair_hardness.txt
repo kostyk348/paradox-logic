@@ -1,0 +1,11 @@
+Frustration index of random signed graphs (Z/2)
+
+  V    m  consistent  max-sat  frustration  brute(ms)
+  8   16       False       13            3        0.2
+ 10   24       False       18            6        1.3
+ 12   37       False       27           10        7.7
+ 14   40       False       31            9       32.8
+
+consistency = one GF(2) rank (microseconds); frustration index = brute force 2^V.
+Optimal repair is NP-hard already at the abelian (Z/2) level: it is MAX-CUT.
+=> 'count the paradoxes' is polynomial; 'fix them minimally' is not.

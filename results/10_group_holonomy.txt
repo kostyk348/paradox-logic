@@ -1,0 +1,9 @@
+Group holonomy on random S_3-labelled graphs (V=9, one EVEN corruption per trial)
+
+  trials:                        400
+  Z/2 (abelianization) detects:  0/400  (0%)
+  S_3 (non-abelian) detects:     398/400  (100%)
+  corrupted edge localised:      377/400  (94%)
+
+=> parity is blind to even corruption; non-abelian holonomy detects it AND localises
+   the offending edge -- a polynomial-time consistency check (and an SO(3) SLAM tool).

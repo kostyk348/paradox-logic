@@ -133,6 +133,7 @@ Requires Python 3 with `numpy` (+ `scipy` and `matplotlib` for `A_conjugacy.py` 
 
 ```
 holonomy.py                     the library (exact GF(2), numpy only)
+groupholonomy.py                group-valued holonomy (any finite group Γ)
 experiments/
   01_contextuality.py           paradox = contextuality
   02_defect_thermodynamics.py   the failed criticality claim
@@ -143,6 +144,8 @@ experiments/
   07_nonabelian.py              non-abelian holonomy, path dependence
   08_classification.py          invariant vs behaviour
   09_diagnostics.py             exact k-XOR-SAT, contradiction localisation
+  10_group_holonomy.py          detection ladder + error localisation
+  11_repair_hardness.py         consistency is easy, optimal repair is hard
   A_conjugacy.py                XOR barrier + Goles-Olivos
   B_living_hurst.py             Hurst estimator null model
   living.c, hurst_null.c        fast C ports
@@ -192,6 +195,35 @@ figures/                        generated figure
 **08 — Classification.** Over random single-input networks the invariant decides **paradox exactly** (`dim coker = 0 ⇔ a fixed point exists`), but it does **not** decide behaviour: at `dim = 0` a large share of systems still oscillate (multistability). Near-perfect classifier of *paradox*, poor classifier of *dynamics*.
 
 **09 — Diagnostics.** k-XOR-SAT (any arity) solved exactly by one packed GF(2) rank computation; reports satisfiability, free variables (= minimum groundings), and localises contradictory clauses. Exact; the Python reference is `O(n²)` in practice (see timings in `results/09_diagnostics.txt`).
+
+## The non-abelian layer — new mathematics
+
+Replace the labels `{0,1}` by a general (possibly non-abelian) group `Γ`. An edge `(a, b, g)` means `x_a = g · x_b`. A global assignment exists iff the labelling defines a **trivial flat Γ-bundle**, i.e. iff the holonomy representation `ρ : π₁(G) → Γ` is trivial. When `Γ = ℤ/2` this is exactly the parity invariant above. For non-abelian `Γ` it is **strictly finer**, and it yields three results, each verified in `experiments/10,11`:
+
+**Detection ladder.** `abelian ⊂ non-abelian`, strictly. An even corruption (a 3-cycle) leaves the abelianization untouched, so a ℤ/2 check is blind — while the S₃ holonomy finds it:
+
+```
+random S₃-labelled graphs, one EVEN corruption per trial (400 trials)
+  ℤ/2 (abelianization) detects:   0/400   (0%)
+  S₃  (non-abelian)    detects: 398/400   (100%)
+  corrupted edge localised:     377/400   (94%)
+```
+
+Parity is the shadow of the real invariant.
+
+**Localisation.** The holonomy does not merely detect a corrupted label — it *localises* the edge (94% exact recovery). This is loop-closure error localisation in pose-graph SLAM (with `SO(3)` rotations in place of group elements), and single-error correction in a group-labelled network.
+
+**Complexity ladder.** *Consistency* is polynomial for any fixed finite `Γ` (`O(E)` group operations). *Optimal repair* is not: the minimum number of labels to change is the **frustration index** `= m − MAX-CUT`, NP-hard already for `ℤ/2`.
+
+```
+signed graphs (ℤ/2)                 consistent   max-sat  frustration
+ V=8   m=16   poly (µs)                no          13          3
+ V=14  m=40   poly (µs)                no          31          9
+```
+
+So: **count the paradoxes in polynomial time; fix them minimally — hard.**
+
+**Frontier.** Non-abelian holonomy *is* braiding. The one setting where holonomy is known to *compute* is topological quantum computation (non-abelian anyons); the classical labelled graphs here are its shadow.
 
 ## Open questions
 
