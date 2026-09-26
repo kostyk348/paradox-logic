@@ -1,0 +1,9 @@
+Gauge transformation  x_v -> c x_v  (labels conjugated)
+
+  trials: 2000
+  #coherent-thoughts preserved:     2000/2000
+  holonomy conjugacy class preserved: 2000/2000
+  holonomy transforms exactly by conjugation: 2000/2000
+
+=> the invariant content (conjugacy class of holonomy) is gauge-invariant;
+   the raw labels are not.  Meaning = the gauge orbit.  Translation = gauge.

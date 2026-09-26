@@ -150,6 +150,10 @@ experiments/
   13_pose_graph.py              SO(3) loop-closure error localisation
   14_anyons.py                  braiding as computation (topological protection)
   15_sapir_whorf.py             language = bundle, thought = global section
+  16_incommensurable.py         expressivity gap between languages
+  17_expressiveness.py          expressiveness law: |Γ|^(-cycle rank)
+  18_meaning_gauge.py           meaning = gauge invariance
+  19_nn_breakthrough.py         holonomy fixes the message-passing blind spot
   A_conjugacy.py                XOR barrier + Goles-Olivos
   B_living_hurst.py             Hurst estimator null model
   living.c, hurst_null.c        fast C ports
@@ -274,6 +278,39 @@ languages = labellings of a 4-cycle over S_3
 ```
 
 The coherent-thought set depends **only on the conjugacy class of the holonomy**. Hence: **strong Whorf is false** — there is a translation-invariant core (the holonomy class) shared by all languages in one gauge orbit — and **weak Whorf is true** — the class bounds the thinkable, and a non-trivial class admits no global thought at all. The number of "meaning-classes" of a language is the number of conjugacy classes of its group.
+
+Three further results sharpen this (`16`–`18`):
+
+**Incommensurable languages (`16`).** The strong Whorf hypothesis survives only at the level of the *relation algebra* (the group), not the labels. Two S₃-languages — one consistent, one paradoxical — have **identical ℤ/2 images**, so a parity language assigns them the same meaning while their truth is opposite. A proposition expressible in S₃ is *inexpressible* in ℤ/2: an expressivity gap, not a translation gap. (ℤ/2 has 2 conjugacy classes, S₃ has 3; the third class is the untranslatable content.)
+
+**Expressiveness law (`17`).** The fraction of labelings that are globally coherent is `≈ |Γ|^(−cycle_rank)`, `cycle_rank = E − V + 1`:
+
+```
+ Γ     rank   measured   |Γ|^-rank
+Z/2      5     0.0315     0.0312
+Z/2     14     0.0001     0.0001
+S_3      2     0.0285     0.0278
+```
+
+A tree (rank 0) constrains nothing; each independent cycle multiplies the constraint by `|Γ|`. **Thought is bound in proportion to the cycle structure of the grammar.**
+
+**Meaning = gauge invariance (`18`).** Under `x_v ↦ c·x_v` the labels conjugate and the coherent-thought set maps bijectively to itself: number of thoughts, holonomy conjugacy class, and the conjugation law are all preserved (2000/2000 trials). The invariant content of a language is exactly its gauge orbit — a working definition of meaning as invariance, not reference.
+
+## What this gives neural networks
+
+The XOR barrier of this repository is exactly the **1-WL / message-passing barrier**: a global parity property is *not* a function of any permutation-invariant local statistic. `19` makes it concrete on a signed-graph **balance** task (is every cycle even?):
+
+```
+local statistics (7 features):   test acc = 0.508     <- chance
+holonomy only (1 feature, O(E)): test acc = 1.000
+```
+
+The breakthrough is narrow but provable: **a global topological invariant, computed in `O(E)`, closes an architectural blind spot that more depth and more data cannot.** Concrete directions:
+
+- **Holonomy-augmented GNNs.** Add an `O(E)` cycle-holonomy readout (spanning tree + fundamental cycles). Message passing over-squashes and cannot count cycles / detect frustration; this supplies the missing *global* invariant at negligible cost. Testable on tasks with topological ground truth (molecules, circuits, constraint systems, pose graphs).
+- **Group-valued sequence models.** Let the state be a group element and update `h_t = g_t · h_{t−1}` with non-abelian `Γ`. This is path-dependent memory that does not saturate — the non-abelian holonomy of experiment `07`, used as a sequence-model prior.
+- **Meaning = invariance as a training principle.** Learn on gauge-invariant features only; the invariant content is the gauge orbit, so gauge-fixing removes a large weight-space redundancy.
+- **Topologically protected memory.** The holonomy class is discrete and cannot be moved by value perturbations — a candidate carrier for continual-learning memory that gradients do not overwrite.
 
 ## Open questions
 

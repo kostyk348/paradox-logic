@@ -1,0 +1,9 @@
+Global graph balance from a signed graph (V=12)
+
+  local statistics only (7 features):  test acc = 0.508
+  holonomy only (1 feature, O(E)):     test acc = 1.000
+  local + holonomy:                    test acc = 1.000
+
+=> local (message-passing-like) models are at chance: balance is global parity.
+   One O(E) holonomy feature solves it exactly -- closing the XOR / 1-WL blind spot
+   with a cheap, provably-correct global invariant instead of more depth.

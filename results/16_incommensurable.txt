@@ -1,0 +1,14 @@
+Two S_3-languages with the SAME ℤ/2 image but opposite truth
+
+  L_id: labels=[(1, 2, 0), (1, 2, 0), (2, 0, 1), (2, 0, 1)]
+        S_3 holonomy = (0, 1, 2)  ->  consistent = True
+        ℤ/2 image    = [0, 0, 0, 0]  ->  consistent = True
+  L_3c: labels=[(1, 2, 0), (1, 2, 0), (1, 2, 0), (1, 2, 0)]
+        S_3 holonomy = (1, 2, 0)  ->  consistent = False
+        ℤ/2 image    = [0, 0, 0, 0]  ->  consistent = True
+
+  both have identical ℤ/2 image (all 'even' -> ℤ/2 says 'consistent')
+  but L_3c is PARADOXICAL in S_3.  ℤ/2 cannot state this.
+  => a proposition expressible in S_3 is INEXPRESSIBLE in ℤ/2: the languages are
+     incommensurable -- not a translation gap but an expressivity gap.
+  (ℤ/2 has 2 classes; S_3 has 3: the third class is the untranslatable content.)
