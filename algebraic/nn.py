@@ -48,13 +48,19 @@ class AlgebraHead(nn.Module):
 
 
 class Hybrid(nn.Module):
-    """trunk (any net over the sequence) + exact algebra head on a state channel."""
-    def __init__(self, trunk_out: int, n_states: int, n_out: int):
+    """trunk (a net over the sequence) + exact algebra state, combined by a small head.
+
+    The head sees [trunk features, algebra state] and learns the ORCHESTRATION: when the
+    answer is a condition on the net's features, when it is the algebra's exact state, and
+    any composition of the two.
+    """
+    def __init__(self, trunk_out: int, n_states: int, n_out: int, hid: int = 64):
         super().__init__()
-        self.head_net = nn.Linear(trunk_out, n_out)
-        self.head_alg = AlgebraHead(n_states, n_out)
+        self.head = nn.Sequential(nn.Linear(trunk_out + n_states, hid), nn.ReLU(),
+                                  nn.Linear(hid, n_out))
+
     def forward(self, trunk_features, state_onehot):
-        return self.head_net(trunk_features) + self.head_alg(state_onehot)
+        return self.head(torch.cat([trunk_features, state_onehot], -1)), None
 
 
 def policy_from_dfa(model: SemigroupRNN, prefix: torch.Tensor) -> Dict[int, float]:

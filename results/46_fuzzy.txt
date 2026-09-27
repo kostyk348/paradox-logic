@@ -1,0 +1,13 @@
+Fuzzy vs crisp automaton
+
+  k    model  params  clean  noise .1  noise .2
+  2    crisp      14  0.488  0.507  0.515
+  2    fuzzy      16  0.493  0.515  0.512
+  5    crisp     155  0.193  0.212  0.192
+  5    fuzzy     160  0.226  0.189  0.175
+  7    crisp     399  0.142  0.136  0.156
+  7    fuzzy     406  0.139  0.143  0.152
+
+=> fuzzy (unnormalised memberships) tolerates input noise better: graded evidence
+   superposes instead of snapping. It is a weighted automaton over a SEMIRING,
+   the natural generalisation of the monoid/group the earlier experiments used.

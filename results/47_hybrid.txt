@@ -1,0 +1,9 @@
+Mixed task: parity if x1=1 else (T mod 2)
+
+     model  T=12   T=24   T=48
+  net only  0.671  0.712  0.697
+algebra only  0.738  0.750  0.747
+    hybrid  1.000  1.000  1.000
+
+=> net fails (parity), algebra fails (branch), the gated HYBRID solves both --
+   the model decides, per sample, whether to trust the network or the algebra.

@@ -1,0 +1,12 @@
+{
+  "nodes": 5,
+  "comment": "replicated store: 5 replicas; edge label 0 = must hold the same value, 1 = observed DIFFERENT. A partition injected edge [2,0,1], creating an odd-parity cycle 0-1-2-0.",
+  "edges": [
+    [0, 1, 0],
+    [1, 2, 0],
+    [2, 0, 1],
+    [2, 3, 0],
+    [3, 4, 0],
+    [4, 0, 0]
+  ]
+}

@@ -1,0 +1,3 @@
+nodes=5  constraints=6
+consistent=False  contradictions=1  groundings_to_pin=1
+minimum repair: drop 1 constraint(s): [(2, 0, 1)]

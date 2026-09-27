@@ -58,6 +58,24 @@ def test_cascade():
     assert C.run((1, 1)) is True and C.run((1,)) is False
 
 
+def test_verify_report():
+    from tools.verify_cli import report
+    spec = {"nodes": 5, "edges": [[0, 1, 0], [1, 2, 0], [2, 0, 1], [2, 3, 0], [3, 4, 0], [4, 0, 0]]}
+    out = report(spec)
+    assert "contradictions=1" in out and "drop 1 constraint" in out
+
+
+def test_hybrid_shapes():
+    try:
+        import torch
+        from algebraic.nn import Hybrid
+    except Exception:
+        return
+    h = Hybrid(8, 2, 2)
+    out, _ = h(torch.randn(4, 8), torch.randn(4, 2))
+    assert tuple(out.shape) == (4, 2)
+
+
 if __name__ == "__main__":
     for name, fn in sorted(globals().items()):
         if name.startswith("test_"):
