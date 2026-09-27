@@ -1,0 +1,8 @@
+Full net using our layers: perception + algebraic composition
+
+                             model  params  k<=2   k<=3   k<=4   symbol-acc
+                 A: end-to-end CNN   94923  0.970  0.800  0.636
+           B: perception + algebra   82100  1.000  1.000  1.000     1.000
+
+=> a FULL network = learned perception + our algebraic core: it reads the image and
+   composes exactly, generalising to more operators; end-to-end fails at unseen counts.
