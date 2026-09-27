@@ -1,0 +1,8 @@
+Balanced-bracket generation (train on valid strings)
+
+   StateLM(seeded) (   273 params): valid generated =  75.8%   masked(algebra) =  78.4%
+  StateLM(learned) (   273 params): valid generated =  64.8%   masked(algebra) =  69.0%
+              LSTM ( 33667 params): valid generated = 100.0%
+
+=> unconstrained, the LSTM samples valid strings here too; the algebraic model
+   gives a GUARANTEE: masking by the state algebra makes validity 100% by construction.

@@ -1,0 +1,10 @@
+Train on UPRIGHT only; test at arbitrary angles
+
+           model     0    15    30    45    60    90   180
+             CNN  0.93  0.86  0.60  0.33  0.19  0.10  0.32
+        C4 (n=4)  0.81  0.68  0.48  0.44  0.57  0.81  0.81
+             C12  0.80  0.80  0.79  0.79  0.79  0.80  0.80
+             C36  0.76  0.76  0.76  0.76  0.76  0.76  0.76
+
+ => C4 holds only multiples of 90; C36 is (near) continuously invariant --
+    a continuous symmetry prior, trained on upright digits alone.
