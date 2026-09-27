@@ -1,0 +1,10 @@
+Semigroup RNN = differentiable automaton; tasks = regular languages.
+
+        task  |M|    hard-acc T12/48/192/512   LSTM T12/48/192  recovered
+ parity(Z/2)    2   1.00 1.00 1.00 1.00      0.53 0.48 0.51        100%
+   mod7(Z/7)    7   0.12 0.15 0.15 0.14      0.13 0.14 0.15         35%
+  reset(K=4)    5   1.00 1.00 1.00 1.00      0.99 1.00 1.00         90%
+  contains11    3   0.88 1.00 1.00 1.00      0.95 1.00 1.00         67%
+
+=> with a HARD automaton at test time the semigroup RNN is exact at any length;
+   it recovers the target algebra. LSTM stays at chance on the group languages.
