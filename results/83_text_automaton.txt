@@ -1,0 +1,13 @@
+corpus 1075394 chars; vocabulary 4664 words
+  ep1 train bpc 2.277
+  ep3 train bpc 2.051
+  ep5 train bpc 1.937
+  ep7 train bpc 1.863
+
+unconstrained : valid-word  88.0%   |  sample: I am I with trudges.SICINGHAM:Read improck and madam. O, lord love of Breck and troubless I am to thee.BLUNT:U
+
+trie-constrained: valid-word 100.0%   |  sample: ever o'error'strong a wilt of most prevail shine. 'tigers of native,--for safe committed to myself? now in the
+
+=> the trie is an exact finite automaton (a discrete algebra): under it every emitted word
+   is real BY CONSTRUCTION; the learned part only supplies fluency. Texture: orbit=C8,
+   text: trie=automaton. Same architecture: perception + an exact discrete core.

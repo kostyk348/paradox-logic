@@ -1,0 +1,10 @@
+TEXTURE: exact rotation invariance (C8 orbits) + monoid histogram vs a CNN
+
+          test set  CNN(no aug)    orbit      raw  raw+orbit
+           upright        0.952    0.739    0.904      0.918
+          rot +-15        0.923    0.689    0.843      0.877
+          rot +-45        0.738    0.623    0.648      0.704
+           rot all        0.307    0.739    0.316      0.354
+
+=> 'alg LBP' uses the C8 orbit quotient -> invariance BY CONSTRUCTION; the CNN must learn
+   it from augmentation. The monoid histogram is exact aggregation (counts add).
