@@ -1,0 +1,8 @@
+Text compositional semantics: perception + monoid of modifiers
+
+                             model  params  k<=2   k<=3   k<=4
+                       A: flat net   48365  1.000  0.970  0.930
+           B: perception + algebra     903  1.000  1.000  1.000
+
+=> the meaning of the phrase is a monoid homomorphism; reading the words (perception)
+   + composing the modifiers (algebra) generalises to unseen modifier counts.
