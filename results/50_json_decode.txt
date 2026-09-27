@@ -1,0 +1,5 @@
+JSON-array generation (char GRU LM)
+
+  unconstrained sampling : valid =   0.4%
+  constrained by grammar : valid = 100.0%
+  example constrained output: [6]

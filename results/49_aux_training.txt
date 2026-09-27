@@ -1,0 +1,9 @@
+Auxiliary exact-state supervision for a general GRU (Shakespeare, mod 11)
+
+             model  params  steps->90%  acc T=48/192/512
+    GRU (baseline)   46043          75  1.000  0.574  0.279
+   GRU + aux state   47110          75  1.000  0.643  0.301
+GRU + aux (strong)   47110          75  1.000  0.597  0.278
+
+=> an exact automaton as an AUXILIARY teacher gives process supervision for free:
+   faster to threshold and better long-range -- a training trick usable on any net.
