@@ -1,0 +1,14 @@
+One algebraic layer, many tasks (train T=10; test T=10 / 40)
+
+          task      model  params  acc T=10  acc T=40
+        parity        GRU   42338    0.498    0.508
+        parity   +algebra   42443    1.000    1.000
+          mod7        GRU   43063    0.130    0.128
+          mod7   +algebra   43223    1.000    1.000
+    reset(K=4)        GRU   42629    1.000    1.000
+    reset(K=4)   +algebra   42761    1.000    1.000
+     mixed w=3        GRU   42774    1.000    1.000
+     mixed w=3   +algebra   42919    1.000    1.000
+
+=> same API, every algebraic task: the layer keeps accuracy at longer lengths where
+   the GRU degrades. On free text (no algebra) the layer gives nothing -- the boundary.
