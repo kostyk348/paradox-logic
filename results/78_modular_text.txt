@@ -1,0 +1,13 @@
+Modular statistic over TEXT: (count of 'e') mod 7 (train T=64)
+
+                                   model  T=64   T=256  T=1024
+      net (char-GRU, learns the counter)  1.000  1.000  0.980
+            exact monoid counter (mod 7)  1.000  1.000  1.000
+
+Streaming composition (a 1000-char stream, 10 chunks of 100):
+  whole-stream statistic  = 1
+  combined chunk stats    = 1   equal? True
+  (the monoid composes EXACTLY; a net carrying state across chunks would drift)
+
+=> modular statistics are a monoid: exact on text, any length, and chunk-composable.
+   On such statistics the algebra beats the net; on smooth statistics the net is fine.
