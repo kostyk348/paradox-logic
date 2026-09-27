@@ -22,6 +22,25 @@ Companion results: **XOR is the exact reduction barrier to Hopfield** (LP-verifi
 
 ---
 
+## Library — the two levels
+
+```python
+from algebraic import verify, min_repair, consistency, holonomy_dim, l_star, DFA, constrained_decode, product, cascade
+from algebraic.nn import SemigroupRNN, AlgebraHead, Hybrid          # torch, optional
+
+# ---- LEVEL 2: programs as monoids (verify a process network by cohomology) ----
+verify(3, [(0, 1, 1), (1, 2, 1), (2, 0, 1)])   # -> {'consistent': False, 'contradictions': 1, ...}
+min_repair(3, [(0, 1, 1), (1, 2, 1), (2, 0, 1)])   # minimum clauses to drop (NP-hard in general)
+P = product(dfaA, dfaB)                          # compose processes;  cascade(A, B, couple) for wreath
+
+# ---- LEVEL 1: the algebra as a drop-in layer for a network ----
+dfa = l_star([0, 1], lambda s: sum(s) % 2 == 0)  # discovers parity -> 2 states, type=group
+model = SemigroupRNN(n_tokens=7, n_states=7)     # learnable finite automaton (exact at test time)
+head = AlgebraHead(7, 7)                         # exact state -> label; Hybrid = trunk + head
+```
+
+Tests: `PYTHONPATH=. python3 tests/test_algebraic.py` (9/9 — Mermin, min-repair, L*, product, cascade).
+
 ## The model
 
 A Boolean constraint network is a graph whose edges carry a parity label `n ∈ {0,1}`:
