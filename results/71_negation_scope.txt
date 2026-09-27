@@ -1,0 +1,8 @@
+Negation scope on real words (train <=1 negator; test 2-3)
+
+                       model  params   k<=1   k<=2   k<=3
+                    flat net   47810   1.000  0.686  0.744
+   perception + parity (alg)    1220   1.000  1.000  1.000
+
+=> negation scope is parity; reading the negators (perception) + parity (algebra)
+   generalises to multiple negations; the flat net must learn the scope from data.

@@ -1,0 +1,12 @@
+Reasoning as algebra (a knowledge base = parity constraints)
+
+  given 'rains', does 'wet' follow?  entail=True  (possible values [1])
+  given 'rains', does 'umbrella' follow?  entail=True  (possible values [1])
+  given 'rains', does 'indoors' follow?  entail=True  (possible values [1])
+  given 'rains', does 'happy' follow?  entail=False  (possible values [0, 1])
+
+  add a contradicting fact (indoors != rains):
+    consistent = False   contradictions = 1   min facts to drop = 1
+
+=> reasoning is algebra: entailment = the KB forces the value; contradiction = a
+   non-trivial holonomy (the paradox); repair = min_repair. Exact, no generation.

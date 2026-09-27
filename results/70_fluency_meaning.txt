@@ -1,0 +1,34 @@
+Fluency + guaranteed meaning (reading the sentences)
+
+target value = 4
+   LM   : 'it is bad very not'  (value 4)  OK 
+   LM   : 'it is bad not very'  (value 4)  OK 
+   LM   : 'it is good very'  (value 4)  OK 
+   fixed: 'it is good very'  (value 4)  OK
+
+target value = -2
+   LM   : 'it is bad'  (value -2)  OK 
+   LM   : 'it is bad little very'  (value -2)  OK 
+   LM   : 'it is bad'  (value -2)  OK 
+   fixed: 'it is good not'  (value -2)  OK
+
+target value = 2
+   LM   : 'it is bad very little not'  (value 2)  OK 
+   LM   : 'it is bad not'  (value 2)  OK 
+   LM   : 'it is good'  (value 2)  OK 
+   fixed: 'it is good'  (value 2)  OK
+
+target value = -4
+   LM   : 'it is good very not'  (value -4)  OK 
+   LM   : 'it is bad very'  (value -4)  OK 
+   LM   : 'it is good not very'  (value -4)  OK 
+   fixed: 'it is good not very'  (value -4)  OK
+
+target value = 1
+   LM   : 'it is bad little not'  (value 1)  OK 
+   LM   : 'it is good not little not'  (value 1)  OK 
+   LM   : 'it is good not not little'  (value 1)  OK 
+   fixed: 'it is good little'  (value 1)  OK
+
+=> the LM is fluent but often wrong; the algebraic corrector gives the target meaning
+   every time, and the sentence stays well-formed.
