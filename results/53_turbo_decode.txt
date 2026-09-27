@@ -1,0 +1,7 @@
+       naive (1 pass/char): model calls/string = 16.00   valid = 100.0%
+ constrained (1 pass/char): model calls/string = 16.00   valid = 100.0%
+     automaton-speculative: model calls/string =  2.00   valid = 100.0%
+
+template length = 16 chars, free = 2 digits
+=> the automaton emits every FORCED token for free: ~8.0x fewer model forward passes
+   while keeping validity 100%. Same trick scales to JSON/code/SQL decoding in an LLM.
