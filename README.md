@@ -318,6 +318,47 @@ The breakthrough is narrow but provable: **a global topological invariant, compu
 - The non-abelian case gives path dependence but was only checked on toy cycles. What is the right `G` for real constraint systems, and does `H¹(G; G)` classify their regimes?
 - If frustration is the right dynamical picture, does the frustrated Ising model of the *actual* reference network reproduce its measured Hurst — or is even that still a parameter, not a regime?
 
+## The full arc — experiments 01–31
+
+**Parity holonomy (01–11).** paradox = contextuality (`01`); defect thermodynamics fails (`02`); parity checksum (`03`); novelty ≠ noise (`04`); self-reference lemma refuted (`05`); frustration (SK spin glass) (`06`); non-abelian holonomy + path dependence (`07`); classification (`08`); exact k-XOR-SAT (`09`); detection + localisation (`10`); consistency P vs optimal repair NP-hard (`11`).
+
+**Computation, errors, language (12–19).** holonomy code, distance = girth (`12`); SO(3) loop-closure localisation, 98% (`13`); anyons / braiding (`14`); Sapir–Whorf: language = bundle, thought = section (`15`); incommensurable languages (`16`); expressiveness law `|Γ|^(−cycle rank)` (`17`); meaning = gauge invariance (`18`); holonomy fixes the message-passing blind spot (`19`).
+
+**Neural networks (20–31).**
+- `20` group-valued RNN: parity with **14 params** at 1.00 vs GRU/LSTM (25–34k) at chance; MNIST control shows no algebraic prior helps there.
+- `21` game theory: paradox = no pure Nash equilibrium; the act = a mixed strategy.
+- `22` MNIST the group way: train upright, C4-invariance generalises to all rotations.
+- `23` real C4 G-CNN (group convolutions); rotation classification = group task (0.98).
+- `24` topological invariant of MNIST: holes b1 (8 → 2 holes).
+- `25–26` semigroup RNN = differentiable automaton (Myhill–Nerode); recovers the syntactic monoid; exact at any length.
+- `27` the `Z/n` barrier is robust (curriculum, straight-through do not crack it).
+- `28` real text (lexer on source code): SemigroupRNN 0.70 vs LSTM 0.99 — the honest failure.
+- `29` **decisive:** a cyclic scaffold init solves `Z/2..Z/13` exactly; a *wrong* scaffold gives no help.
+- `30` MNIST prior = the symmetry group; the wrong subgroup (C2) fixes only the axes it covers.
+- `31` algebra search: automaton minimisation discovers the monoid size; order search finds the group.
+
+## Headline result: the prior must match the algebra
+
+| domain | algebra | right prior | result |
+|---|---|---|---|
+| sequences | `Z/n` | cyclic scaffold | random 0.21/0.16/0.09 → **1.00** (k=5/7/11/13) |
+| images | symmetry `C4` | C4-equivariance | CNN 0.17 → **0.88** on all rotations |
+| wrong prior | another algebra | — | `Z/n`: 0.00; MNIST 90°: 0.13 |
+
+**Representation is cheap and exact; the wall is search. A matched prior removes the wall; capacity does not substitute for the right algebra.** This is Whorf's thesis in machine form: the grammar determines what is learnable.
+
+## What it gives neural networks (fewer parameters)
+
+Where the algebra matches, the parameter count collapses:
+
+```
+task        algebraic model        LSTM / GRU            ratio
+parity        14 params            33 666 params        ~2400x
+sum mod 7    154 params            34 631 params         ~225x
+```
+
+and for images the win is *zero-shot invariance* (train upright only) with the **same** parameter count as a CNN — no rotation-augmentation data needed. The honest limits: it only helps where the algebra matches; on real text the finite-state model lost to an LSTM, and discovering larger algebras (Z≥5) by gradient descent remains the open problem that a scaffold solves.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
