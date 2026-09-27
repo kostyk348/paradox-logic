@@ -1,0 +1,10 @@
+corpus 120000 chars, vocab 61, same steps for both
+
+A (plain) params ~ 337821   B (algebraic) params ~ 331604   (diff 6217)
+
+                     model   params  time s  bits/char
+         A plain char-LSTM   337821     132  1.819
+   B + exact algebra feats   331604     166  1.783
+
+=> same time, same parameters: report the delta above (this answers the question
+   directly -- if B is not lower, the algebra does not improve free-text quality).

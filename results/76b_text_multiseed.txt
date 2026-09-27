@@ -1,0 +1,7 @@
+Controlled multi-seed (Shakespeare char-LM; same 500 steps)
+
+  A plain char-LSTM     params 234029   bits/char 2.028 ± 0.014   [2.008 2.042 2.034]
+  B + exact algebra     params 228952   bits/char 2.048 ± 0.013   [2.06  2.055 2.03 ]
+
+  delta (B - A) = +0.020 bits/char  (A better)
+  => if |delta| < std, the algebra gives NO reliable text-quality gain at equal params/time.
