@@ -1,0 +1,8 @@
+Relative-position task: copy the token 3 steps before the end (train T=20)
+
+   positional encoding  params  acc T=20  T=40  T=80
+      absolute learned   51468  1.000  0.058  0.052
+   RoPE (group action)   35084  1.000  1.000  0.558
+
+=> relative position is a group action; RoPE generalises to lengths it never saw,
+   absolute learned PE memorises positions and degrades. Algebra in attention works.
