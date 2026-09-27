@@ -1,0 +1,12 @@
+(1)+(2) training plugin: base GRU + exact algebra (attached or DISCOVERED)
+
+      task            model  params  T=10   T=40
+    parity        +attached   42443  1.000  1.000
+    parity   +L* discovered   42150  1.000  1.000
+
+(3a) SteerableInvariant on rotated MNIST (train upright only)
+     acc @ 0/30/45/90 deg: 0.769  0.763  0.761  0.751
+
+(3b) FuzzyAutomaton on mod-5 counting with input noise (states superpose)
+        crisp MLP: acc @ noise 0/.1/.2: 0.184 0.183 0.203
+            fuzzy: acc @ noise 0/.1/.2: 0.192 0.199 0.206

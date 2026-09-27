@@ -29,6 +29,8 @@ class AlgebraicLayer(nn.Module):
         self.head_alg = nn.Linear(n_states, n_out)
         self.head_net = nn.Linear(trunk_out, n_out) if trunk_out else None
         self.gate = nn.Linear(n_states + trunk_out, 1) if trunk_out else None
+        if self.gate is not None:                      # start trusting the exact algebra
+            nn.init.constant_(self.gate.bias, -4.0)
         self.hid = hid
 
     def states_onehot(self, x: torch.Tensor) -> torch.Tensor:
