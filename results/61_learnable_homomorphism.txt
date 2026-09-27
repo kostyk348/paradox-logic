@@ -1,0 +1,9 @@
+Compositional operators (mod 11), train length T=3
+
+               model  params  T=3    T=4    T=5    T=8
+            flat GRU   43307  1.000  0.058  0.016  0.092
+learnable homomorphism    1291  1.000  0.032  0.004  0.090
+  given homomorphism     132  1.000  1.000  1.000  1.000
+
+=> if the LEARNED operators generalise to unseen lengths, gradient descent found the
+   semantic algebra (the monoid of operators) from data; the given version is the ceiling.
