@@ -1,0 +1,52 @@
+corpus 150000 chars, vocab 61
+trained 265s   bits/char = 1.468
+
+========================================================================
+GENERATED SHAKESPEARE (prompt 'ROMEO: ', temp 0.65)
+========================================================================
+ROMEO: I am honours hath in the father,
+When she hath shall be so.
+
+CORIOLANUS:
+Shall your necks: therefore shall tribunes
+Wherein they were comes of us such as he counts: the state of your senators
+As it wild losd to lame to Rome,
+Thou art their violent, bested in him. Let him on.
+
+SICINIUS:
+What we will be discreate;
+That I can such as my son; the way in my lord, and possible;
+Should hear me by as the country's power you to your tribunes: and thou shouldst thou doth but pire
+That 'tis many parties, and the defection some of Rome,
+And still, said enough;
+For my company, who hath done will
+consul are not to see
+flatters and tribunes for the rock, which should be the gods,
+They noble Marcius craves of the wars,
+Who lady he is a man as their
+Than the end of your country's bods.
+
+MENENIUS:
+You sweat with us.
+
+SICINIUS:
+Why, shall toust the nobles, ranking, or sweet, and to the rest are all
+Than he had a pretty litter them,
+As if all the well of the shoply,
+I carried to Rome, the belly and free and end,
+That the state of the people?
+
+SICINIUS:
+What is the senate-house.
+
+BRUTUS:
+Caius Marcius should be discontented believe to read the walls me, and thou show'd
+March to have struck eath out of 
+========================================================================
+second sample (JULIET:): JULIET: I take rather hate
+To hear the gods before him flattery: and they shall for they are not.
+
+VIRGILIA:
+Ay, son, I see me with us: turn the head,
+When when you shall see them asking to come bothing since ecourse? where you shall perceive
+Whether to hear me hath been so my son, so man I could cr...
