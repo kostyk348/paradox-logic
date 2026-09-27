@@ -1,0 +1,10 @@
+Discrete from continuous: pointwise VQ vs holonomy (integrate)
+
+  pointwise VQ (quantise each step, compose):  acc = 0.132
+  holonomy (integrate the path, quantise once): acc = 1.000
+
+  holonomy additivity h(path1+path2) == h(path1)+h(path2): 50.5%
+
+=> the discrete emerges from the continuous only through the HOLONOMY (the integral);
+   it is path-dependent (the paradox), and that is exactly what makes the bridge
+   non-trivial -- a trivial pointwise map cannot carry the algebra.
