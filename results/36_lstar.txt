@@ -1,0 +1,10 @@
+L* discovers the minimal automaton from queries only (no architecture prior)
+
+    language  true |M|  L* states      algebra   queries
+      parity         2          2        group       511
+        mod7         7          7        group   6725801
+  reset(K=4)         5          5    aperiodic       527
+  contains11         3          3    aperiodic       518
+
+=> L* recovers the syntactic monoid size and its group/aperiodic type with NO prior;
+   that type (Krohn-Rhodes) tells you which architecture the task needs.

@@ -1,0 +1,7 @@
+Language: balanced brackets AND even #a   (state = depth x parity, 14 states)
+
+  LSTM unconstrained      : valid =  59.2%
+  LSTM + automaton-decode : valid = 100.0%
+
+=> constrained decoding by the grammar gives 100% valid generation BY CONSTRUCTION;
+   the model supplies the distribution, the algebra supplies the guarantee.

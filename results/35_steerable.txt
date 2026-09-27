@@ -1,0 +1,8 @@
+steerable invariant feature dim = 462
+
+train upright only; test at arbitrary angles
+  angle:    0    15    30    45    60    90   135   180
+  acc  : 0.75  0.76  0.76  0.76  0.77  0.75  0.74  0.75
+
+=> exact continuous rotation invariance at FFT cost (121098 params
+   on the head only); no 36x group-averaging blow-up.

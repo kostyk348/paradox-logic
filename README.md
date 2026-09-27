@@ -336,6 +336,11 @@ The breakthrough is narrow but provable: **a global topological invariant, compu
 - `29` **decisive:** a cyclic scaffold init solves `Z/2..Z/13` exactly; a *wrong* scaffold gives no help.
 - `30` MNIST prior = the symmetry group; the wrong subgroup (C2) fixes only the axes it covers.
 - `31` algebra search: automaton minimisation discovers the monoid size; order search finds the group.
+- `32` continuous symmetry: train upright, `C_n` (n=12,36) is flat across all angles (~SO(2)).
+- `35` **steerable:** polar-FFT magnitude features are *exactly* rotation-invariant at FFT cost (0.75 flat over 0–180°, single pass, no n× averaging).
+- `36` **algebra search without a prior:** Angluin's `L*` recovers the syntactic monoid size and type (group / aperiodic) from queries alone — parity 2, mod7 7, reset 5, contains11 3, all exact.
+- `37` **generation, perfect:** on a mixed language (balanced brackets ∧ even #a), an LSTM samples 59% valid; automaton-constrained decoding gives **100% valid by construction**.
+- `34` text generation (plain balanced brackets) is the honest counter-example: unconstrained, the LSTM beats the small state model.
 
 ## Headline result: the prior must match the algebra
 
