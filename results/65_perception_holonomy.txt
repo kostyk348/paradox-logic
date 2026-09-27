@@ -1,0 +1,9 @@
+Perception + HOLONOMY bridge vs end-to-end (train T=8)
+
+                             model  params  T=8    T=32   T=64
+                 A: end-to-end net   29576  0.878  0.178  0.120
+          B: perception + holonomy     257  0.978  0.954  0.912
+
+=> perception is learned (neural), the bridge is the INTEGRAL (holonomy, not VQ),
+   and the composition is exact. A net can use our algebra end-to-end IF the
+   continuous->discrete link is a holonomy, not a pointwise quantiser.
