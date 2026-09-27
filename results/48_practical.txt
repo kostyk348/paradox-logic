@@ -1,0 +1,9 @@
+Running count mod k over Shakespeare — a REAL sequence task
+
+                 model  params  steps->90%  acc T=48/192/512/1024
+       LSTM (baseline)   60059         100  1.000  0.613  0.282  0.187
+   LSTM + algebra chan   60180          75  1.000  0.671  0.393  0.307
+     algebra head only     132        <600  1.000  1.000  1.000  1.000
+
+=> for state tasks the exact algebra head costs ~K^2 params and is exact at ANY length,
+   where a 60k-param LSTM degrades (1.00 -> 0.19). The channel also cuts steps-to-90%.
