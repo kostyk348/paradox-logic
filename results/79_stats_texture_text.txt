@@ -1,0 +1,14 @@
+(4) non-linear modular statistic  (sum x*y) mod 7  (train T=10)
+
+                                   model  T=10   T=32   T=100
+                               net (GRU)  0.118  0.148  0.122
+            exact monoid (sum x*y mod 7)  1.000  1.000  1.000
+
+TEXTURE: MNIST via pixel statistics (histogram+moments) -> acc 0.206  (CNN ~0.94)
+
+FREE TEXT: topic from bag-of-words counts (monoid) -> acc 1.000
+  streaming: counts(whole) == counts(chunk1)+counts(chunk2)? True
+
+=> non-linear modular stats: the exact monoid wins (net struggles with the reduction);
+   TEXTURE: low-order statistics are weak (texture needs a net); FREE TEXT: bag-of-words
+   counts ARE a sufficient statistic (monoid) -> exact, streaming, composable.
