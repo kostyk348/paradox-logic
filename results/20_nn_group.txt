@@ -1,0 +1,54 @@
+/home/lain/.local/lib/python3.14/site-packages/torch/autograd/graph.py:979: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 9010). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at /__w/pytorch/pytorch/c10/cuda/CUDAFunctions.cpp:119.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+=== algorithmic Whorf: group-valued RNN vs baselines (PyTorch) ===
+
+[parity]  group = cyclic 2;  train T=12, N=6000
+        [train] ep  0 acc=1.000 loss=0.017
+        [train] ep 20 acc=1.000 loss=0.000
+        [train] ep 40 acc=1.000 loss=0.000
+        [train] ep 60 acc=1.000 loss=0.000
+        [train] ep 80 acc=1.000 loss=0.000
+        [train] ep100 acc=1.000 loss=0.000
+        [train] ep120 acc=1.000 loss=0.000
+        [train] ep140 acc=1.000 loss=0.000
+    GroupRNN       14 params : T=12:1.00  T=24:1.00  T=48:1.00  T=96:1.00
+    Group+GRU    7598 params : T=12:1.00  T=24:1.00  T=48:1.00  T=96:1.00
+    GRU         25346 params : T=12:0.48  T=24:0.51  T=48:0.51  T=96:0.50
+    LSTM        33666 params : T=12:0.51  T=24:0.51  T=48:0.49  T=96:0.51
+    MLP          6914 params : T=12:1.00  T=24:--  T=48:--  T=96:--
+
+[sum7]  group = cyclic 7;  train T=12, N=6000
+        [train] ep  0 acc=0.146 loss=1.935
+        [train] ep 20 acc=1.000 loss=0.470
+        [train] ep 40 acc=1.000 loss=0.082
+        [train] ep 60 acc=1.000 loss=0.029
+        [train] ep 80 acc=1.000 loss=0.013
+        [train] ep100 acc=1.000 loss=0.006
+        [train] ep120 acc=1.000 loss=0.003
+        [train] ep140 acc=1.000 loss=0.002
+    GroupRNN      154 params : T=12:1.00  T=24:0.00  T=48:0.00  T=96:0.18
+    Group+GRU    8698 params : T=12:1.00  T=24:0.00  T=48:0.00  T=96:0.25
+    GRU         26311 params : T=12:0.14  T=24:0.13  T=48:0.14  T=96:0.13
+    LSTM        34631 params : T=12:0.15  T=24:0.14  T=48:0.15  T=96:0.16
+    MLP         23559 params : T=12:0.14  T=24:--  T=48:--  T=96:--
+
+[s3]  group = symmetric3;  train T=12, N=6000
+        [train] ep  0 acc=0.335 loss=1.099
+        [train] ep 20 acc=0.328 loss=1.105
+        [train] ep 40 acc=0.338 loss=1.090
+        [train] ep 60 acc=0.453 loss=1.039
+        [train] ep 80 acc=0.434 loss=1.034
+        [train] ep100 acc=0.435 loss=1.190
+        [train] ep120 acc=0.460 loss=1.021
+        [train] ep140 acc=0.428 loss=1.040
+    GroupRNN       90 params : T=12:0.44  T=24:0.35  T=48:0.34  T=96:0.33
+    Group+GRU    8442 params : T=12:0.34  T=24:0.33  T=48:0.34  T=96:0.34
+    GRU         25862 params : T=12:0.33  T=24:0.34  T=48:0.32  T=96:0.32
+    LSTM        34182 params : T=12:0.32  T=24:0.34  T=48:0.32  T=96:0.34
+    MLP          7942 params : T=12:1.00  T=24:--  T=48:--  T=96:--
+
+[MNIST control]  sequences = 28 rows, group state = Z/8
+    GroupRNN(Z/8, 402 params):  test acc = 0.119
+    MLP(784-128-10, 101770 params):  test acc = 0.934
+    LSTM(28->64, 25354 params):     test acc = 0.940
+    GroupRNN+GRU(15250 params):     test acc = 0.821

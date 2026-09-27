@@ -1,0 +1,23 @@
+(1) matching pennies (A matches, B mismatches)
+    trajectory: [(0, 0), (1, 1), (0, 0), (1, 1), (0, 0), (1, 1), (0, 0), (1, 1), (0, 0)]
+    no pure Nash equilibrium; best-response period = 2 (oscillation)
+
+(2) Condorcet paradox: fraction of profiles with NO Condorcet winner
+alternatives  voters  P(cycle)
+           3       3     0.061
+           3       5     0.068
+           3      11     0.076
+           4       3     0.166
+           4       5     0.214
+           4      11     0.247
+           5       3     0.323
+           5       5     0.393
+           5      11     0.441
+           6       3     0.496
+           6       5     0.568
+           6      11     0.630
+
+=> a Condorcet cycle is a frustrated cycle of preferences = non-trivial holonomy.
+   paradox (no global section)  ==  no pure Nash equilibrium.
+   the 'act' (ground a node)    ==  a mixed strategy / tie-break: it only picks a
+   representative, which is why a parity act and a random act were indistinguishable.
