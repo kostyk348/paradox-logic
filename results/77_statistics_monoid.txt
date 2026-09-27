@@ -1,0 +1,9 @@
+Statistics as a monoid: sign of covariance (train T=20)
+
+                             model  T=20   T=100  T=500
+A: flat net (approximates the stat)  0.996  1.000  1.000
+B: exact sufficient stats (monoid)  1.000  1.000  1.000
+
+=> sufficient statistics combine as a monoid, so they are EXACT at any length; the
+   flat net must approximate the statistic and drifts. Statistics IS algebra where
+   the statistic is a homomorphism (Darmois-Koopman-Pitman: exponential families).
