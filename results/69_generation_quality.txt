@@ -1,0 +1,10 @@
+Text generation QUALITY: does the phrase mean the target?
+
+                               generator    valid   correct
+  A flat LM (target v= 3)                     0.676     0.000
+  A flat LM (target v=-2)                     1.000     1.000
+  A flat LM (target v= 5)                     0.415     0.000
+  B algebraic + reachable decoding           1.000     1.000
+
+=> quality for structured text is not fluency but MEANING: the algebraic generator
+   produces phrases that are valid AND mean the target; the flat LM often misses it.
