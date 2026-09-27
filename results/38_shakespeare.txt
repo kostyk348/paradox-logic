@@ -1,0 +1,9 @@
+corpus 250000 chars, vocab 62
+
+Shakespeare char-LM (bits per character, lower is better)
+
+             LSTM (baseline) ( 158590 params): 1.898 bpc
+    LSTM + semigroup channel ( 175454 params): 1.895 bpc
+
+=> the algebraic channel does not replace or beat the LSTM on free text;
+   it is a structural prior, useful only where the task algebra exists.

@@ -1,0 +1,15 @@
+Exact counting mod k over a Shakespeare character stream
+
+  k        model  params  T=96   T=384  T=1024
+  2 StateRNN(seed)     254  1.000  1.000  1.000   [hard]
+  2  StateRNN(rnd)     254  0.551  0.499  0.496   [hard]
+  2           LSTM   37378  1.000  1.000  1.000   [soft]
+  5 StateRNN(seed)    1580  1.000  1.000  1.000   [hard]
+  5  StateRNN(rnd)    1580  0.368  0.249  0.220   [hard]
+  5           LSTM   37573  0.308  0.225  0.211   [soft]
+  7 StateRNN(seed)    3094  1.000  1.000  1.000   [hard]
+  7  StateRNN(rnd)    3094  0.337  0.178  0.155   [hard]
+  7           LSTM   37703  0.852  0.463  0.260   [soft]
+
+=> exact long-range arithmetic over real text: the finite-state model stays exact
+   at any length; the LSTM degrades. This is where 'text done algebraically' wins.

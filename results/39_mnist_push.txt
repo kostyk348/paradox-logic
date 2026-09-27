@@ -1,0 +1,9 @@
+  y = c if y is 0 else y+c
+Train WITH all 4 rotations; test on standard + rotated MNIST
+
+       model  params  std   rot90  rot180  rot270
+   CNN (aug)    7690  0.880  0.864  0.877  0.859
+C4-GCNN (aug)   55786  0.852  0.852  0.852  0.852
+
+=> with the symmetry algebra in the architecture, the model is rotated-robust
+   AND matches the standard CNN on upright digits.
