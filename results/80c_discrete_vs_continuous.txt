@@ -1,0 +1,8 @@
+Matching pennies: discrete vs continuous
+
+  DISCRETE best-response : no pure NE -> cycle, period = 2   trajectory [(0, 0), (1, 1), (0, 0), (1, 1), (0, 0), (1, 1)]
+  CONTINUOUS gradient    : critical point (0,0) -> converges, |x|=0.000, osc=0.000
+
+=> the PARADOX (no pure Nash equilibrium) is a DISCRETE phenomenon. A network as a
+   continuous game converges (critical point exists); as DISCRETE agents it can cycle,
+   and there the holonomy/cycle-parity certificate predicts instability (exp 21, 80).

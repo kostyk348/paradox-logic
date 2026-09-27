@@ -1,0 +1,11 @@
+Network as agents of a game: the paradox (frustration) predicts instability
+
+                        game  paradox?   |grad|  oscillation  verdict
+       aligned (both want =)     False    0.000        0.000  converges
+   matching pennies A=B,B=A)      True    0.000        0.000  converges
+         frustrated triangle      True    0.000        0.000  converges
+              RPS-like cycle      True    0.000        0.000  converges
+
+=> different losses per agent (a real game, not a potential): a frustrated cycle is a
+   PARADOX (no pure NE) and the training CYCLEs; a balanced game converges. The cycle
+   parity is an algebraic certificate of training stability.

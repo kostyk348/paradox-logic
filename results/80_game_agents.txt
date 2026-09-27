@@ -1,0 +1,11 @@
+Network as a game: algebraic certificate vs training stability
+
+                    game  paradox?   |grad|  oscillation  verdict
+         aligned (all +)     False    0.000        0.000  converges
+    one conflict (0-1 -)      True    0.000        0.000  converges
+     frustrated triangle      True    0.000        0.000  converges
+        RPS-like 3-cycle      True    0.000        0.000  converges
+
+=> the cycle-parity (holonomy) is a CERTIFICATE: a frustrated cycle (paradox) means
+   no pure Nash equilibrium, so simultaneous training CYCLEs; a balanced game converges.
+   A network is thus algebraic agents of a game, and its (in)stability is the paradox.

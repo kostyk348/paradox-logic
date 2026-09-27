@@ -6,82 +6,63 @@ Tools:
   verify_network   {nodes, edges}  -> consistency / contradictions / groundings
   min_repair       {nodes, edges}  -> minimum constraints to drop
   xor_sat          {nvars, clauses, rhs}
-  json_repair      {text}          -> always-valid JSON (repairs brackets/quotes)
+  json_repair      {text}          -> longest complete prefix, closed; `valid` is json.loads
   balance_repair   {text}          -> balanced () [] {} and quotes for free text
   lexer_state      {text}          -> exact state of free text (normal/string/comment)
+  json_generate    {schema, ...}   -> schema-valid JSON by typed decisions (Jev-style)
+  json_validate    {instance, schema} -> JSON-Schema subset -> errors
+  json_plan        {schema}        -> the static typed-decision program of a schema
 
 Run:  python3 mcp/algebra_mcp.py     (reads one JSON-RPC request per line on stdin)
 """
 from __future__ import annotations
 import json
 import os
+import random
 import sys
+from typing import Any
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from algebraic import consistency, holonomy_dim, min_groundings, xor_sat
+from algebraic.repair import json_repair, balance_repair, lexer_state
+from algebraic.jev_json import generate as jev_generate, validate as jev_validate, plan as jev_plan
 
 
-def _balance(s: str):
-    """append the closers needed to balance (), [], {} and quotes (respecting strings)."""
-    stack = []; in_str = False; esc = False; q = ''
-    for ch in s:
-        if in_str:
-            if esc: esc = False
-            elif ch == '\\': esc = True
-            elif ch == q: in_str = False
-        else:
-            if ch in '"\'': in_str = True; q = ch
-            elif ch in '([{': stack.append(ch)
-            elif ch in ')]}':
-                pairs = {')': '(', ']': '[', '}': '{'}
-                if stack and stack[-1] == pairs[ch]: stack.pop()
-    out = s
-    if in_str: out += q
-    close = {'(': ')', '[': ']', '{': '}'}
-    for o in reversed(stack):
-        out += close[o]
-    return out
-
-
-def json_repair(text: str):
+def _as_obj(x, default=None) -> Any:
+    """Accept a JSON string or an already-decoded value (MCP parameters arrive as text)."""
+    if x is None or x == "":
+        return {} if default is None else default
+    if isinstance(x, (dict, list)):
+        return x
     try:
-        json.loads(text); return text, True
+        return json.loads(x)
     except Exception:
-        pass
-    s = text.strip()
-    repaired = _balance(s)
-    for _ in range(4):
-        try:
-            json.loads(repaired); return repaired, True
-        except Exception:
-            repaired = repaired[:-1]              # drop a trailing incomplete token
-            repaired = _balance(repaired)
-    return repaired, False
+        return {} if default is None else default
 
 
-def balance_repair(text: str):
-    r = _balance(text)
-    d = 0; ok = True
-    for ch in r:
-        d += ch in '([{'; d -= ch in ')]}'
-        if d < 0: ok = False
-    return r, ok
+def _gen_report(a):
+    schema = _as_obj(a.get("schema"))
+    if not isinstance(schema, dict) or not schema:
+        return {"valid": False, "json": "", "errors": ["schema is required"], "stats": {}}
+    values = _as_obj(a.get("values"))
+    logits = _as_obj(a.get("logits")) or None
+    raw = a.get("seed")
+    seed = int(raw) if str(raw).strip() not in ("", "None", "none") else 0
+    obj, rep = jev_generate(schema, context=a.get("context", ""), values=values,
+                            logits=logits, rng=random.Random(seed))
+    return {
+        "json": json.dumps(obj, ensure_ascii=False),
+        "valid": rep["valid"],
+        "errors": rep["errors"],
+        "stats": {k: rep[k] for k in ("read", "decided", "generated",
+                                      "decode_steps", "baseline_steps", "savings")},
+        "decisions": rep["decisions"],
+    }
 
 
-def lexer_state(text: str):
-    st = "normal"
-    for c in text:
-        if st == "normal":
-            st = "dq" if c == '"' else "sq" if c == "'" else "comment" if c == '#' else "normal"
-        elif st == "dq":
-            st = "esc" if c == '\\' else ("normal" if c == '"' else "dq")
-        elif st == "sq":
-            st = "esc" if c == '\\' else ("normal" if c == "'" else "sq")
-        elif st == "comment":
-            st = "normal" if c == '\n' else "comment"
-        elif st == "esc":
-            st = "dq"
-    return st
+def _validate_report(a):
+    errs = jev_validate(_as_obj(a.get("instance")), _as_obj(a.get("schema")))
+    return {"valid": not errs, "errors": errs}
 
 
 TOOLS = {
@@ -104,7 +85,11 @@ TOOLS = {
                          "free": xor_sat(a["nvars"], a["clauses"], a["rhs"])[1]},
     },
     "json_repair": {
-        "description": "always-valid JSON: repairs unbalanced brackets/quotes",
+        "description": ("repair malformed JSON: keeps the longest prefix ending after a complete "
+                        "value, closes open brackets/quotes, drops trailing commas and dangling "
+                        "escapes, unwraps ```json fences and single-quoted JSON. `valid` is the "
+                        "result of json.loads on the returned string; on failure the ORIGINAL "
+                        "text is returned unchanged"),
         "input": {"text": "str"},
         "fn": lambda a: (lambda r: {"valid": r[1], "json": r[0]})(json_repair(a["text"])),
     },
@@ -117,6 +102,28 @@ TOOLS = {
         "description": "exact state of free text (normal / dq / sq / comment / esc)",
         "input": {"text": "str"},
         "fn": lambda a: {"state": lexer_state(a["text"])},
+    },
+    "json_generate": {
+        "description": ("generate schema-valid JSON by typed decisions (Jev-style): enum / boolean / "
+                        "key-presence / array-length are CLOSED choices read from `logits` (letters) "
+                        "or decided by `seed` at ZERO decode steps; string / integer / number are open "
+                        "slots taken from `values` or synthesised under min/max/length bounds. The "
+                        "document is valid by construction and re-checked (see `valid`/`errors`)"),
+        "input": {"schema": "json", "context": "str", "values": "json",
+                  "logits": "json", "seed": "int"},
+        "fn": _gen_report,
+    },
+    "json_validate": {
+        "description": "validate a document against a JSON-Schema subset (type/properties/required/"
+                        "additionalProperties/items/min-max/MinLength-maxLength/enum/null)",
+        "input": {"instance": "json", "schema": "json"},
+        "fn": _validate_report,
+    },
+    "json_plan": {
+        "description": "static typed-decision program of a schema: which fields are closed choices, "
+                        "which are open slots, and their options",
+        "input": {"schema": "json"},
+        "fn": lambda a: {"steps": jev_plan(_as_obj(a.get("schema")))},
     },
 }
 
@@ -136,7 +143,7 @@ def handle(req):
     if method == "initialize":
         return {"jsonrpc": "2.0", "id": rid,
                 "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}},
-                           "serverInfo": {"name": "algebra_mcp", "version": "0.1"}}}
+                           "serverInfo": {"name": "algebra_mcp", "version": "0.2"}}}
     if method == "tools/list":
         tools = [{"name": k, "description": v["description"],
                   "inputSchema": {"type": "object", "properties": {p: {"type": "string"} for p in v["input"]}}}
