@@ -1,0 +1,8 @@
+Wreath task  Z/k  wr  C2  (k=5):  counter with mode-dependent direction
+
+             model  params  T=10   T=48   T=200
+     flat (random)     410  0.645  0.126  0.090
+cascade (KR spline)     410  1.000  1.000  1.000
+
+=> the Kron-Rhodes cascade (aperiodic control x group) solves the mixed monoid
+   exactly at any length; the flat model must discover it and fails.

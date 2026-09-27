@@ -1,0 +1,8 @@
+Running count mod 7 over a Shakespeare stream (per position)
+
+                     model  params  T=48   T=192  T=512
+               Transformer  104071  0.786  0.212  0.165
+   Transformer + automaton  104120  0.874  0.267  0.209
+
+=> the transformer learns local patterns but not exact state; the algebraic channel
+   makes the state EXACT at any length -- semantics (transformer) + state (algebra).
