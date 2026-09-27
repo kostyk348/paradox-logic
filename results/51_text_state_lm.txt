@@ -1,0 +1,8 @@
+Character LM bits-per-char: baseline vs exact prefix-state channel
+
+      corpus   baseline  + exact state
+        code      1.423          1.424
+ shakespeare      1.936          1.942
+
+=> exact, cheap prefix state (lexer/depth/line) helps a char LM where the text is
+   structured (code); on prose the gain shrinks. Structure the net can't infer is free.

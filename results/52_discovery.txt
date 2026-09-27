@@ -1,0 +1,12 @@
+Discovering the algebra: symbolic (L*) vs gradient (RNN, no seed)
+
+    language true |M|  L* states    L* type  RNN (no seed)
+parity (Z/2)        2          2      group         learns  OK
+  mod5 (Z/5)        5          5      group          FAILS  OK
+  mod7 (Z/7)        7          7      group          FAILS  OK
+  contains11        3          3  aperiodic         learns  OK
+  reset(K=4)        5          5  aperiodic         learns  OK
+
+=> L* recovers the syntactic monoid (size AND group/aperiodic type) exactly, from
+   queries, with NO seed -- the open problem 'search the algebra' is solved symbolically.
+   The neural net's job shrinks to perception; structure becomes exact inference.
