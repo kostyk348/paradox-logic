@@ -1,0 +1,15 @@
+Typed-decision fill (Jev-style)
+
+  JSON: {"intent": "refund", "subscribed": "true", "note": "customer asked for a refund"}
+  closed-choice fields READ (no decode): 2
+  fields GENERATED (grammar):            1  (27 decode steps)
+    intent: pick=  refund  gap=4.00  shares={'A': 0.95, 'B': 0.02, 'C': 0.02, 'D': 0.02}
+    subscribed: pick=    true  gap=4.00  shares={'A': 0.98, 'B': 0.02}
+
+  JSON baseline decode steps (every field): ~89
+  typed decode steps (strings/numbers only): 27
+  => decode work cut to 30% for this schema
+
+  prompt 1 prefix == context: True   prompt 2: True
+  shared prefix length = 51 chars -> identical KV across questions (prefix cache OK)
+  CAVEAT: put the question AFTER the text; re-reading the text per field defeats the cache.

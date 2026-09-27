@@ -76,6 +76,31 @@ def test_hybrid_shapes():
     assert tuple(out.shape) == (4, 2)
 
 
+def test_jev_read_choice():
+    from algebraic.jev import read_choice
+    best, dist, gap = read_choice({"A": 4.0, "B": 0.0, "C": 0.0})
+    assert best == "A" and abs(sum(dist.values()) - 1.0) < 1e-9 and gap == 4.0
+
+
+def test_jev_typed_fill():
+    from algebraic.jev import typed_fill
+    schema = {"intent": {"type": "enum", "options": ["refund", "cancel"]},
+              "note": {"type": "string"}}
+    obj, meta = typed_fill(schema, "ctx",
+                           lambda q: {"A": 5.0, "B": 0.0},
+                           lambda q: "hello")
+    assert obj["intent"] == "refund" and obj["note"] == "hello"
+    assert meta["read"] == 1 and meta["generated"] == 1
+
+
+def test_runtime_discover_execute():
+    from algebraic.runtime import Runtime
+    rt = Runtime([0, 1], lambda s: sum(s) % 2 == 0)          # L* finds parity
+    assert rt.accepts((1, 1)) and not rt.accepts((1,))
+    assert rt.type() == "group"
+    assert Runtime.quantize([-3.0, 0.0, 3.0], -3.0, 3.0, 2) == [0, 1, 1]
+
+
 if __name__ == "__main__":
     for name, fn in sorted(globals().items()):
         if name.startswith("test_"):
