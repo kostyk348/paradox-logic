@@ -1,0 +1,20 @@
+    [soc] ep0 train 0.280
+    [soc] ep1 train 0.435
+    [soc] ep2 train 0.550
+    [soc] ep3 train 0.668
+    [soc] ep4 train 0.711
+    [soc] ep5 train 0.773
+    [soc] ep6 train 0.800
+    [soc] ep7 train 0.807
+    [cnn] ep0 train 0.869
+    [cnn] ep1 train 0.906
+    [cnn] ep2 train 0.938
+    [cnn] ep3 train 0.946
+    [cnn] ep4 train 0.959
+    [cnn] ep5 train 0.966
+TEXTURE, tuned: LOCAL + COVARIANT agent interactions (C4)
+
+  equivariant agent society   acc = 0.746   params 111130
+  CNN baseline                acc = 0.947   params 20490
+
+(exp 81: global mean message 0.586 -> degenerate interaction, not the algebra.)

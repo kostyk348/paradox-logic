@@ -1,0 +1,79 @@
+Jev-style structured output: typed decisions, not decoding
+
+1. generated document
+   {"intent": "refund", "priority": "medium", "escalate": true, "tags": ["tags_776", "tags_911"], "customer": {"name": "customer_name_430", "age": 23}}
+   valid (re-checked) : True   errors: []
+   decisions: read=3 (logits)  decided=2 (rng)  generated=4 (open slots)
+   decode steps = 35   token-by-token baseline = 148   savings = 76.3%
+   closed decisions (0 decode):
+           intent:     refund  [read] gap=4.00
+         priority:     medium  [read] gap=2.00
+         escalate:       True  [read] gap=1.50
+           tags[]:          2  [decide]
+            note?:      False  [decide]
+
+2. a closed-choice-only schema costs ZERO decode steps
+   {"a": true, "b": "x", "c": "p"}   decode_steps=0  valid=True
+
+3. by construction: random schemas -> validity
+   5000/5000 = 100.0% valid (strict json.loads + validator)
+
+4. contrast: unconstrained sampling instead of typed decisions
+   character sampling : 0.0% valid
+   typed decisions    : 100.0% valid
+
+5. determinism (same seed -> same bytes)
+   identical: True
+
+6. repair closes the loop: EVERY truncation of the document is valid JSON
+   truncated prefixes recovered: 148/148 = 100.0%
+
+7. mutation testing: injected violations caught by the validator
+      drop required -> 1 error(s): $.intent: required property missing
+           bad enum -> 1 error(s): $.intent: 'nope' not in enum ['refund', 'cancel', 'info', 'complaint']
+        bool as int -> 1 error(s): $.escalate: expected boolean
+          age < min -> 1 error(s): $.customer.age: 5 < minimum 18
+      string as int -> 1 error(s): $.customer.name: expected string
+     extra property -> 1 error(s): $.extra: additional property not allowed
+     below minItems -> 1 error(s): $.tags: fewer than minItems 1
+   caught 7/7 = 100%
+
+8. the static typed-decision program (plan)
+             intent  closed  ['refund', 'cancel', 'info', 'complaint']
+           priority  closed  ['low', 'medium', 'high', 'urgent']
+           escalate  closed  [True, False]
+             tags[]  closed  ['length in [1, 2, 3]']
+              note?  key     [True, False]
+               tags  open    ['string']
+      customer.name  open    ['string']
+       customer.age  open    ['integer']
+               note  open    ['string']
+
+9. the logits interface: the module can EMIT its own logits
+   context: The customer wants a refund because the charge was duplicated
+       intent [enum] options=['refund', 'cancel', 'info'] pick=refund gap=1.000
+              scores={'A': 1.025019, 'B': 0.025001, 'C': 0.025013}  shares={'A': 0.576, 'B': 0.212, 'C': 0.212}
+       urgent [boolean] options=[True, False] pick=True gap=0.000
+              scores={'A': 0.025093, 'B': 0.02502}  shares={'A': 0.5, 'B': 0.5}
+   self  -> {"intent": "refund", "urgent": true}  (read=2, decode=0)
+   fed back -> {"intent": "refund", "urgent": true}   identical: True
+   callable model -> {"intent": "info", "urgent": false}  (read=1, decided=1)
+   NOTE: 'self' is a deterministic LEXICAL scorer, not a language model; its gap shows
+         when a decision is really unreliable (gap~0 on booleans without cue words).
+
+10. fail-closed: schemas outside the subset are refused, never silently 'valid'
+   pattern      lint=$.properties.f: unsupported keyword 'pattern'
+                -> refused: $.properties.f: unsupported keyword 'pattern'
+   format       lint=$.properties.f: unsupported keyword 'format'
+                -> refused: $.properties.f: unsupported keyword 'format'
+   tuple items  lint=$.properties.f: tuple 'items' arrays are unsupported
+                -> refused: $.properties.f: tuple 'items' arrays are unsupported
+   unknown kw   lint=$.properties.f: unsupported keyword 'minLen'
+                -> refused: $.properties.f: unsupported keyword 'minLen'
+   bad $ref     lint=$.properties.f: unresolvable $ref '#/$defs/nope'
+                -> refused: $.properties.f: unresolvable $ref '#/$defs/nope'
+   validate('abc', pattern) -> ["schema: $: unsupported keyword 'pattern'"]
+
+11. $defs/$ref and oneOf/anyOf as typed decisions (paths keep names apart)
+   {"home": {"city": "Berlin", "mode": "urban", "label": false}, "work": {"city": "Prague", "mode": "rural"}}
+   valid=True  paths used: ['home.mode', 'home.label?', 'home.label@branch', 'home.label', 'work.mode']

@@ -39,7 +39,55 @@ model = SemigroupRNN(n_tokens=7, n_states=7)     # learnable finite automaton (e
 head = AlgebraHead(7, 7)                         # exact state -> label; Hybrid = trunk + head
 ```
 
-Tests: `PYTHONPATH=. python3 tests/test_algebraic.py` (9/9 — Mermin, min-repair, L*, product, cascade).
+Tests: `PYTHONPATH=. python3 tests/test_algebraic.py` (25/25 — Mermin, min-repair, L*, product, cascade, repair, Jev JSON).
+
+### Structured output — `algebraic.repair` and `algebraic.jev_json`
+
+Two pure modules that make an LLM's structured output cheap and trustworthy, exposed over the
+algebra MCP (`mcp/algebra_mcp.py`):
+
+```python
+from algebraic.repair import json_repair, lexer_state
+json_repair('{"a": 1, "b": [2, 3')      # -> ('{"a": 1, "b": [2, 3]}', True)
+
+from algebraic.jev_json import generate, validate, emit_logits, check_schema
+obj, rep = generate(schema, context=user_text, logits="self")          # its own logits
+obj, rep = generate(schema, logits=lambda q, k, opts: model.logits(q)) # a real model
+obj, rep = generate(schema, values=extracted)                          # content already known
+```
+
+**Typed decisions, not decoding.** `enum` / `boolean` / key presence / array length / the
+`oneOf`-`anyOf` branch are CLOSED choices: they are read from letter logits in one forward pass
+with ZERO decoded tokens (`algebraic.jev.read_choice`). Only `string` / `integer` / `number`
+slots are produced — from `values`, or synthesised under `min`/`max`/length bounds. A
+closed-choice-only schema costs literally 0 decode steps.
+
+**The logits interface.** `logits` may be a dict, a callable `(question, key, options)`, or the
+string `"self"` — the module's own deterministic lexical scorer (a heuristic, explicitly not a
+language model; its softmax `gap` tells you when a decision is unreliable). `emit_logits(schema,
+context=...)` returns the logits for every closed decision (a logits request/answer you can
+inspect or override and feed straight back). Decision keys are `path` (value), `path?` (key
+presence), `path[]` (array length), `path@branch` (union branch); paths are dotted, so
+`home.city` and `work.city` never collide.
+
+**Fail-closed.** `check_schema` lints the schema against the implemented subset
+(`type`/`properties`/`required`/`additionalProperties`/`items`/`minItems`-`maxItems`/
+`minimum`-`maximum`/`minLength`-`maxLength`/`enum`/`const`/`oneOf`/`anyOf`/`$defs`/`$ref`).
+Anything else — `pattern`, `format`, tuple `items`, unknown keywords, unresolvable or recursive
+`$ref` — is refused with a path-labelled error, and `validate` reports those schema errors
+instead of claiming a document is valid. `$ref` chains are followed, so a definition reused
+twice generates correctly twice.
+
+`json_repair` keeps the longest prefix ending after a *complete* JSON value and closes it
+(100% of truncation points of the test corpus become valid JSON), is string-aware, drops
+trailing commas, unwraps ```` ```json ```` fences and single-quoted JSON — and on failure
+returns the **original** text with `valid=False`, never a mutated non-JSON string.
+MCP tools: `json_generate`, `json_logits`, `json_validate`, `json_check_schema`, `json_plan`.
+`experiments/78_jev_json.py` measures the whole thing: 100% valid over 5000 random schemas,
+0% for unconstrained sampling, 0 decode steps for closed-choice-only schemas, and every
+injected schema violation caught.
+
+
 
 ## The model
 

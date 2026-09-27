@@ -1,0 +1,7 @@
+TEXTURE (MNIST): agents=patches, algebraic interaction
+
+  agent society (16 agents, 3 rounds)  acc = 0.586   params 16522
+  CNN baseline                          acc = 0.947   params 20490
+
+=> report the delta: if the agent society does not reach the CNN, texture still needs
+   unconstrained learned features, algebra-in-agents notwithstanding.

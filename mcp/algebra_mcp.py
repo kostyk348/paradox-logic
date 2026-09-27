@@ -25,7 +25,9 @@ from typing import Any
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from algebraic import consistency, holonomy_dim, min_groundings, xor_sat
 from algebraic.repair import json_repair, balance_repair, lexer_state
-from algebraic.jev_json import generate as jev_generate, validate as jev_validate, plan as jev_plan
+from algebraic.jev_json import (generate as jev_generate, validate as jev_validate,
+                               plan as jev_plan, emit_logits as jev_emit_logits,
+                               check_schema as jev_check_schema, SchemaError)
 
 
 def _as_obj(x, default=None) -> Any:
@@ -40,29 +42,77 @@ def _as_obj(x, default=None) -> Any:
         return {} if default is None else default
 
 
-def _gen_report(a):
-    schema = _as_obj(a.get("schema"))
-    if not isinstance(schema, dict) or not schema:
-        return {"valid": False, "json": "", "errors": ["schema is required"], "stats": {}}
-    values = _as_obj(a.get("values"))
-    logits = _as_obj(a.get("logits")) or None
+def _dict_arg(x) -> dict:
+    v = _as_obj(x)
+    return v if isinstance(v, dict) else {}
+
+
+def _logits_arg(a):
+    """logits: a JSON dict, or the literal "self" (module's own logits) / "none" (RNG only)."""
+    mode = str(a.get("logits_mode") or "").strip().lower()
+    raw = a.get("logits")
+    if isinstance(raw, str) and raw.strip().lower() in ("self", "none"):
+        return raw.strip().lower()
+    if mode == "self":
+        return "self"
+    if mode == "none":
+        return None
+    return _dict_arg(raw) or None
+
+
+def _seed(a):
     raw = a.get("seed")
-    seed = int(raw) if str(raw).strip() not in ("", "None", "none") else 0
-    obj, rep = jev_generate(schema, context=a.get("context", ""), values=values,
-                            logits=logits, rng=random.Random(seed))
+    return int(raw) if str(raw).strip() not in ("", "None", "none") else 0
+
+
+def _gen_report(a):
+    schema = _dict_arg(a.get("schema"))
+    if not schema:
+        return {"valid": False, "json": "", "errors": ["schema is required"], "stats": {}}
+    try:
+        obj, rep = jev_generate(schema, context=a.get("context", ""),
+                                values=_dict_arg(a.get("values")), logits=_logits_arg(a),
+                                rng=random.Random(_seed(a)))
+    except SchemaError as e:
+        return {"valid": False, "json": "", "errors": [str(e)],
+                "schema_errors": jev_check_schema(schema), "stats": {}}
     return {
         "json": json.dumps(obj, ensure_ascii=False),
         "valid": rep["valid"],
         "errors": rep["errors"],
-        "stats": {k: rep[k] for k in ("read", "decided", "generated",
+        "stats": {k: rep[k] for k in ("read", "decided", "given", "generated",
                                       "decode_steps", "baseline_steps", "savings")},
         "decisions": rep["decisions"],
     }
 
 
+def _logits_report(a):
+    schema = _dict_arg(a.get("schema"))
+    if not schema:
+        return {"error": "schema is required", "logits": {}, "fields": []}
+    logits = _logits_arg(a)
+    if logits is None:
+        logits = "self"
+    try:
+        res = jev_emit_logits(schema, context=a.get("context", ""), logits=logits,
+                              rng=random.Random(_seed(a)))
+    except SchemaError as e:
+        return {"error": str(e), "schema_errors": jev_check_schema(schema),
+                "logits": {}, "fields": []}
+    res["source"] = "self (lexical heuristic)" if logits == "self" else "provided"
+    return res
+
+
 def _validate_report(a):
-    errs = jev_validate(_as_obj(a.get("instance")), _as_obj(a.get("schema")))
-    return {"valid": not errs, "errors": errs}
+    schema = _dict_arg(a.get("schema"))
+    if not schema:
+        return {"valid": False, "errors": ["schema is required"]}
+    errs = jev_validate(_as_obj(a.get("instance")), schema)
+    out = {"valid": not errs, "errors": errs}
+    lint = jev_check_schema(schema)
+    if lint:
+        out["schema_errors"] = lint          # fail-closed: we never vouch for what we ignore
+    return out
 
 
 TOOLS = {
@@ -104,14 +154,35 @@ TOOLS = {
         "fn": lambda a: {"state": lexer_state(a["text"])},
     },
     "json_generate": {
-        "description": ("generate schema-valid JSON by typed decisions (Jev-style): enum / boolean / "
-                        "key-presence / array-length are CLOSED choices read from `logits` (letters) "
-                        "or decided by `seed` at ZERO decode steps; string / integer / number are open "
-                        "slots taken from `values` or synthesised under min/max/length bounds. The "
-                        "document is valid by construction and re-checked (see `valid`/`errors`)"),
+        "description": ("generate schema-valid JSON by typed decisions (Jev-style). CLOSED choices "
+                        "(enum / boolean / key presence / array length / oneOf-anyOf branch) are read "
+                        "from logits at ZERO decode steps; OPEN slots (string/integer/number) come from "
+                        "`values` or are synthesised under min/max/length. Supports $defs/$ref. "
+                        "`logits` is a JSON dict {field: {letter: score}}, the string 'self' (the "
+                        "module's own deterministic lexical logits over `context`), or 'none'. "
+                        "Fail-closed: a schema with unsupported keywords or a recursive $ref is "
+                        "refused with schema_errors instead of being silently ignored"),
         "input": {"schema": "json", "context": "str", "values": "json",
-                  "logits": "json", "seed": "int"},
+                  "logits": "json", "logits_mode": "str", "seed": "int"},
         "fn": _gen_report,
+    },
+    "json_logits": {
+        "description": ("the logits request/answer for a schema: for EVERY closed decision (enum, "
+                        "boolean, key presence, array length, oneOf/anyOf branch) it returns the "
+                        "letter options, the scores, the normalised shares, the softmax gap and the "
+                        "pick. mode='self' uses the module's own deterministic lexical logits over "
+                        "`context`; a provided `logits` dict is echoed back. The `logits` table can be "
+                        "edited and fed straight into json_generate"),
+        "input": {"schema": "json", "context": "str", "logits": "json", "mode": "str", "seed": "int"},
+        "fn": _logits_report,
+    },
+    "json_check_schema": {
+        "description": ("lint a schema against the implemented subset: unknown keywords, pattern/"
+                        "format, tuple items, unresolvable or recursive $ref. Empty list == fully "
+                        "supported. validate() reports these instead of claiming a document is valid"),
+        "input": {"schema": "json"},
+        "fn": lambda a: {"errors": jev_check_schema(_dict_arg(a.get("schema"))),
+                         "supported": not jev_check_schema(_dict_arg(a.get("schema")))},
     },
     "json_validate": {
         "description": "validate a document against a JSON-Schema subset (type/properties/required/"
@@ -123,7 +194,7 @@ TOOLS = {
         "description": "static typed-decision program of a schema: which fields are closed choices, "
                         "which are open slots, and their options",
         "input": {"schema": "json"},
-        "fn": lambda a: {"steps": jev_plan(_as_obj(a.get("schema")))},
+        "fn": lambda a: {"steps": jev_plan(_dict_arg(a.get("schema")))},
     },
 }
 
