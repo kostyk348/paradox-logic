@@ -1,0 +1,14 @@
+Algebraic attention block: softmax (O(T^2)) vs linear (O(T), associative)
+
+     T  softmax ms  linear ms   ratio
+    64         0.4        2.2     0.2x
+   256         1.6        9.7     0.2x
+  1024        25.6       38.7     0.7x
+  2048        99.1       77.4     1.3x
+
+relative-position task (train T=20): accuracy of the two blocks
+   softmax: T=20 1.000  T=40 1.000  T=80 1.000
+    linear: T=20 0.990  T=40 0.072  T=80 0.100
+
+=> linear attention is asymptotically cheaper (O(T)) and here keeps the task;
+   the associativity (monoid) reassociation is the algebraic lever.

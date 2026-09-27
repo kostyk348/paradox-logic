@@ -1,0 +1,9 @@
+Compositional language over operators (mod 11), train length T=3
+
+           model  params  acc T=3  T=4  T=5  T=8
+        flat GRU   43307  1.000  0.058  0.020  0.100
+homomorphic (alg)     132  1.000  1.000  1.000  1.000
+
+=> meaning is a monoid homomorphism; the homomorphic model composes operators and
+   generalises to longer expressions, the flat model memorises and fails. Semantics,
+   in its compositional part, IS algebra.
