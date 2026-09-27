@@ -1,0 +1,8 @@
+Train on UPRIGHT digits only; test on rot 0 / 90 / 180 / 270
+
+             model   params   acc @ rot 0 / 90 / 180 / 270
+    CNN (baseline)    20490   0.959  0.167  0.325  0.097
+  C4-invariant CNN    20490   0.885  0.885  0.885  0.885
+
+=> the baseline collapses off-axis; the group-matched model is invariant by
+   construction. Same theorem: match the model's algebra to the task's algebra.
