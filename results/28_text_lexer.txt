@@ -1,0 +1,10 @@
+corpus: 111497 chars, vocab 101
+state distribution: [73884, 34848, 34, 2659, 69, 3]
+
+per-character lexer-state accuracy (train windows T=64)
+
+         model  params  soft T64/256/1024     hard T64/256/1024
+  SemigroupRNN    3678  0.667 0.694 0.668   0.698 0.732 0.725
+          LSTM   40134  0.967 0.993 0.991   -- -- --
+
+(learned table is read as: for this char, which state -> which state)

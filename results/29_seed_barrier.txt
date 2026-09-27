@@ -1,0 +1,11 @@
+seed = None (random) | correct cyclic | WRONG (affine offset) | weak seed
+
+  k    random   correct  wrong(off)  weak(0.5)
+  2      1.00      1.00        0.51          -
+  5      0.19      1.00        0.00          -
+  7      0.14      1.00        0.00          -
+ 11      0.09      1.00        0.00          -
+ 13      0.08      1.00        1.00          -
+
+=> correct scaffold: Z/2..Z/13 exact.  Wrong scaffold (another algebra): no help.
+   The GRAMMAR PRIOR must match the task algebra -- representation alone is not enough.
