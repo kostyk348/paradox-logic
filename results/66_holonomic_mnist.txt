@@ -1,0 +1,12 @@
+Holonomic network on MNIST (perception + loop-holonomy bridge + discrete core)
+
+                             model   params  acc
+                    CNN (baseline)    20490  0.950
+            CNN + holonomy defects    20530  0.946
+
+  holonomy defects alone (3 features) -> digit: 0.250
+  mean defects per digit 8: 27.2   vs digit 1: 12.5
+
+=> the loop-holonomy (a discrete, path-dependent integral of the orientation field) does
+   carry topological content (holes/defects), but on MNIST it barely adds to perception --
+   the texture is not algebraic. Perception stays learned; the bridge is the paradox.
