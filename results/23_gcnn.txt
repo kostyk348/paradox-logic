@@ -1,0 +1,6 @@
+  y = c if y is 0 else y+c
+(A) digit classification, train UPRIGHT only
+    CNN     (7690p): 0.899  0.141  0.278  0.123
+    C4-GCNN (14334p): 0.614  0.614  0.614  0.614
+(B) rotation (C4 element) classification = group task
+    rotation acc @ 0/90/180/270: 0.984  0.984  0.982  0.979

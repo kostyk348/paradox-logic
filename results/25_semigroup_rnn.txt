@@ -1,0 +1,8 @@
+reset-counter task (non-invertible): state = count since reset, saturate at 4
+
+         model  params   acc @ T 12/24/48/96
+ GroupRNN(Z/5)      65   0.456  0.486  0.482  0.515
+  SemigroupRNN      80   0.753  0.741  0.742  0.739
+          LSTM   34053   1.000  1.000  1.000  1.000
+
+=> reset is not invertible: no group can represent it. The learnable semigroup can.
