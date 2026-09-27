@@ -1,0 +1,8 @@
+Wreath task Z/k wr C2 -- LEARNED structure (no seed)
+
+                 model  params  T=10   T=48   T=200
+            flat table     410  0.699  0.168  0.095
+  trainable KR cascade     272  0.124  0.206  0.200
+
+=> with the wreath-product parameterisation the cascade LEARNS the mixed monoid
+   by gradient descent; the flat table does not discover it.

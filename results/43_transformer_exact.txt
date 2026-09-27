@@ -1,0 +1,12 @@
+Running count mod 7 over Shakespeare: exact state, head comparison
+
+                        head  T=48   T=192  T=512
+       transformer head only  0.881  0.227  0.166
+           algebra head only  0.782  0.841  0.847
+          sum (tf + algebra)  0.972  0.284  0.214
+
+=> the algebra head (state -> label) is EXACT at any length; the transformer head
+   decays. Route the exact structure through the algebra, the rest through the net.
+   fitted algebra head alone @ T=48: 1.000
+   fitted algebra head alone @ T=192: 1.000
+   fitted algebra head alone @ T=512: 1.000

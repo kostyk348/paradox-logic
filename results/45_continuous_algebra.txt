@@ -1,0 +1,9 @@
+Continuous input -> quantiser -> symbolic stream -> L*
+
+  quantiser: 4 bins over theta in [-pi, pi)
+  sample symbols from the stream: [2, 1, 0, 0, 3, 3, 2, 2, 2, 3, 3, 0, 3, 0, 2, 0]
+  L* states recovered from symbols: 4   (true Z/4 counter: 4)
+  algebra type: group
+
+=> a continuous signal becomes algebra-solvable by quantisation: after that L*
+   recovers the exact finite automaton. (A learned VQ would replace the fixed bins.)
