@@ -1,0 +1,9 @@
+Train on UPRIGHT only; test on rot 0/90/180/270
+
+   prior (group)  acc @ 0 / 90 / 180 / 270
+      none (CNN)  0.967  0.172  0.331  0.108
+      C2 {0,180}  0.916  0.127  0.916  0.127
+C4 {0,90,180,270}  0.882  0.882  0.882  0.882
+
+=> a prior invariant to the WRONG subgroup (C2) fixes only the axes it covers;
+   the prior must match the task's symmetry group (C4) -- like the cyclic seed for Z/n.
