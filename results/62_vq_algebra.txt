@@ -1,0 +1,10 @@
+VQ as a homomorphism: composed-rotation task (K=8)
+
+                 quantiser   codebook  acc (predict sum of codes mod K)
+          plain k-means VQ          8  0.001
+          group-aligned VQ          8  0.002
+
+homomorphism check (aligned sectors): q(a+b)==q(a)+q(b)  in 50.2% of pairs
+=> group-aligned VQ is a homomorphism and the codes compose; a generic codebook is not,
+   so its codes do not carry the algebra. This is the VQ that lets automata/L* run on
+   CONTINUOUS inputs: equivariant quantisation = algebra-preserving discretisation.
