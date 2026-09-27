@@ -1,0 +1,10 @@
+Building a net from our layers only (MNIST)
+
+                             model   params  acc
+ pure algebraic (fixed feats+head)   121098  0.768
+                       learned CNN    20490  0.943
+  hybrid: CNN + algebraic features   262372  0.951
+
+=> the pure algebraic net is exact at structure but does NOT perceive: it needs GIVEN
+   features. Perception and semantics need the learned part. A net ENTIRELY of our
+   layers works only for structure tasks -- elsewhere it is the CORE, not the whole net.
