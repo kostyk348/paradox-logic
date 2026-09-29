@@ -1,0 +1,14 @@
+building the algorithmic logit structure ...
+algorithm alone: bits/char 4.513
+
+net alone (renderer from chars):      bits/char 3.076
+algorithm + net (render the logits):  bits/char 2.748
+
+algorithm alone:                      bits/char 4.513
+
+--- generation: the algorithm provides the structure, the net writes it ---
+algorithm alone : o a swennst tatcineWall, hut, rease.GLOUCESINUS:But teed,Of hair offecourth:Fyour, thous probryoush: coune;Wate raves theith, what,'sed thy liveIt tho
+algorithm + net : o a swiness the time his gut the recousin of you to walk!BRAKENBURK:Nis my love their suchis truest matter was a Rominile with hearshall not speap the
+
+=> the net renders the algorithmic logit structure: same tiny net, +0.33 bpc gain, and
+   text that reads like English -- the net's job shrinks to WRITING the result.
