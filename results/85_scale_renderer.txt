@@ -1,0 +1,6 @@
+algorithm: PPM-C (orders 1..4, discount 0.9) ...
+(a) algorithm alone                         bits/char 2.552
+
+(b) LSTM alone (scaled renderer)             bits/char 2.404
+(c) LSTM + algorithmic logits                bits/char 2.384
+(a) algorithm alone                          bits/char 2.552
