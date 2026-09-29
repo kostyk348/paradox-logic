@@ -1,0 +1,9 @@
+exported /tmp/opencode/logit_structure.json  (steps: 24 )
+algorithm greedy sample : :Why, the people, when h
+
+structure = per-word (length, first letter), exactly produced by the algorithm
+  words reconstructed EXACTLY from the skeleton: 861/11244 = 7.7%
+  bits/char of the true words under the writer:  2.769
+
+=> the skeleton (length + first letter) already pins many words exactly; the writer fills
+   the rest. That is 'structure -> text': the algorithm gives the plan, the net writes.

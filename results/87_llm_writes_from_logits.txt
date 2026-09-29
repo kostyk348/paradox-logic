@@ -1,0 +1,10 @@
+structure via logits -> the LLM writes
+
+  algorithmic greedy sample : :Why, the people, when h
+  LLM rendered (added part) : Why, the people, when h
+  char-wise agreement       : 23/23 = 100%
+  bits/char under the PPM   : 1.995
+
+=> when the structure is supplied as logits the LLM does not invent content: it WRITES it.
+   (Both prompts -- even with flat steps marked -- reproduced the structure exactly; the LLM
+   added nothing where the logits were ambiguous. A weak writer, exact, no drift.)
