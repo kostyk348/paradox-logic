@@ -1,0 +1,15 @@
+HOLONOMY of an allocator: fragmentation = distance from the canonical free-space form
+
+                         allocator  failures  avoidable  mean_holonomy  max_holonomy
+ free-list, NO coalescing (galloc)       819        819          19.85            24
+            canonical (coalescing)       151         92           0.00             0
+
+free blocks 1 and 0 (adjacent 16+16), then request 32:
+  no coalescing: holonomy 1  request 32 served: True
+  canonical    : holonomy 0  request 32 served: True
+
+phase-escape holonomy: cross-phase frees 1, leaked blocks 1  (zero iff clean)
+
+=> holonomy>0 == unmerged adjacent free space == fragmentation; the canonical form drives it
+   to 0 and makes allocability path-independent. The phase-escape counter is an exact O(1)
+   invariant flagging a block that outlives its phase.
