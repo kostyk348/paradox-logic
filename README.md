@@ -1,5 +1,9 @@
 # paradox-logic
 
+[![Release](https://img.shields.io/github/v/release/kostyk348/paradox-logic?sort=semver&color=blue)](https://github.com/kostyk348/paradox-logic/releases)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/kostyk348/paradox-logic/blob/master/LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/kostyk348/paradox-logic?branch=master)](https://github.com/kostyk348/paradox-logic/commits/master)
+
 **Parity holonomy of Boolean constraint networks — and why "paradox logic" is a coordinate, not a new class of computation.**
 
 A test-driven study of one thesis: *can a system escape the "state + rule" form by treating paradox as a foundation rather than an error?* This repository formalizes the claim over GF(2), turns every assertion into a checkable experiment, and reports which parts survive.
@@ -29,11 +33,13 @@ from algebraic import verify, min_repair, consistency, holonomy_dim, l_star, DFA
 from algebraic.nn import SemigroupRNN, AlgebraHead, Hybrid          # torch, optional
 
 # ---- LEVEL 2: programs as monoids (verify a process network by cohomology) ----
+
 verify(3, [(0, 1, 1), (1, 2, 1), (2, 0, 1)])   # -> {'consistent': False, 'contradictions': 1, ...}
 min_repair(3, [(0, 1, 1), (1, 2, 1), (2, 0, 1)])   # minimum clauses to drop (NP-hard in general)
 P = product(dfaA, dfaB)                          # compose processes;  cascade(A, B, couple) for wreath
 
 # ---- LEVEL 1: the algebra as a drop-in layer for a network ----
+
 dfa = l_star([0, 1], lambda s: sum(s) % 2 == 0)  # discovers parity -> 2 states, type=group
 model = SemigroupRNN(n_tokens=7, n_states=7)     # learnable finite automaton (exact at test time)
 head = AlgebraHead(7, 7)                         # exact state -> label; Hybrid = trunk + head
@@ -86,8 +92,6 @@ MCP tools: `json_generate`, `json_logits`, `json_validate`, `json_check_schema`,
 `experiments/78_jev_json.py` measures the whole thing: 100% valid over 5000 random schemas,
 0% for unconstrained sampling, 0 decode steps for closed-choice-only schemas, and every
 injected schema violation caught.
-
-
 
 ## The model
 
@@ -181,6 +185,7 @@ The Hurst estimator is sane (i.i.d. → H = 0.000, 0% > 0.6), so the Living syst
 from holonomy import cycle_edges, label_cycle, consistency, holonomy_dim, min_groundings
 
 # a pure-NOT triangle: x0⊕x1=1, x1⊕x2=1, x2⊕x0=1
+
 edges = label_cycle(cycle_edges(3), [1, 1, 1])
 
 assert consistency(3, edges) is False        # no global assignment
